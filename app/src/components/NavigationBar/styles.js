@@ -10,15 +10,18 @@ const styles = StyleSheet.create({
         display:'flex',
         flexDirection:'row',
         alignItems:'center',
-        paddingLeft:10,
-        paddingRight:10,
     },
     content: {
         display:'flex',
         width: Dimensions.get('window').width - 50,
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        paddingLeft:20,
+        paddingRight:10
     },
+    leftButton: {
+        paddingLeft: 10
+    },  
     title: {
      
     }
