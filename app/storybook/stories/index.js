@@ -5,6 +5,8 @@ import { storiesOf } from '@storybook/react-native';
 import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
+import NavigationBar from '../../src/components/NavigationBar';
+
 import Button from './Button';
 import CenterView from './CenterView';
 import Welcome from './Welcome';
@@ -23,3 +25,5 @@ storiesOf('Button', module)
       <Text>😀 😎 👍 💯</Text>
     </Button>
   ));
+
+  storiesOf("Navigation bar", module).add('Default', () => <NavigationBar></NavigationBar>);
