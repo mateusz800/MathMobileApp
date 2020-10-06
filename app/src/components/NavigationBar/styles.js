@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
         display:'flex',
         flexDirection:'row',
         alignItems:'center',
+        elevation:5
     },
     content: {
         display:'flex',

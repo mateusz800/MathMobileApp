@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 239 192" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g transform="matrix(1,0,0,1,1282.23,-815.171)">
+        <g transform="matrix(0.376528,0,0,0.376528,-1967.46,327.488)">
+            <g id="functions-infographics" serif:id="functions infographics" transform="matrix(1.53338,0,0,1.53338,1219.8,1286.14)">
+                <g transform="matrix(0.716887,0,0,0.716887,153.357,56.1715)">
+                    <g transform="matrix(1,0,0,1,240,-500)">
+                        <path d="M104.048,700C200.54,484.897 292.601,492.96 380,700" style="fill:none;stroke:white;stroke-width:24.16px;"/>
+                    </g>
+                    <g transform="matrix(1,0,0,1,515.952,-500)">
+                        <path d="M104.048,700C202.725,935.186 294.523,889.107 380,700" style="fill:none;stroke:white;stroke-width:24.16px;stroke-linecap:round;"/>
+                    </g>
+                </g>
+                <g transform="matrix(1,0,0,1,360,-420)">
+                    <path d="M40,620L435.653,620" style="fill:none;stroke:white;stroke-width:1.73px;stroke-linecap:round;"/>
+                </g>
+                <g transform="matrix(1,0,0,1,247.047,-423.216)">
+                    <path d="M260,430L260,760" style="fill:none;stroke:white;stroke-width:1.73px;stroke-linecap:round;"/>
+                </g>
+                <g transform="matrix(1.30714,0,0,1.30714,291.369,-555.99)">
+                    <text x="269.417px" y="505.224px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:20px;fill:white;">f(x) = cos(x)</text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -11,4 +11,6 @@ Uruchomienie aplikacji:
 npx react-native run-android
 ```
 * IOS
+```bash
 npx react-native run-ios
+```
