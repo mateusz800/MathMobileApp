@@ -8,7 +8,6 @@ import images from '../../constants/images';
 import { colors } from '../../constants'
 import styles from './styles'
 
-//const url = '../../assets/images/lessonLogo/functions.png'
 
 
 

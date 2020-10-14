@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     },
     content: {
         display:'flex',
-        width: Dimensions.get('window').width - 50,
+        width: Dimensions.get('window').width - 70,
         justifyContent:'center',
         alignItems:'center',
         paddingLeft:20,

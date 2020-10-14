@@ -20,8 +20,7 @@ export const barType = {
 /**
  * Bar displayed on top of the screen
  */
-const NavigationBar = ({ title, type }) => {
-    console.log(type);
+const NavigationBar = ({ title, type, progress, maxProgress }) => {
     return (
         <View style={styles.container}>
             <View style={styles.leftButton}>
@@ -29,8 +28,8 @@ const NavigationBar = ({ title, type }) => {
                 {type != barType.DEFAULT && <HamburgerBtn/>}
             </View>
             <View style={styles.content}>
-                {type==barType.DETAILS && <Text style={styles.title}>{title.toUpperCase()}</Text>}
-                {type == barType.LESSON && <Progress value={3} max={10}/> }
+                {type == barType.DETAILS && <Text style={styles.title}>{title.toUpperCase()}</Text>}
+                {type == barType.LESSON && <Progress value={progress} max={maxProgress}/> }
             </View>
         </View>
     );
