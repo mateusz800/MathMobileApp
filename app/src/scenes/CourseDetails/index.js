@@ -6,7 +6,6 @@ import images from '../../constants/images';
 
 const CourseDetails = ({ route }) => {
     const { name, imageIdent } = route.params;
-    console.log(name);
     return (
         <ScrollView>
             <NavigationBar type={barType.DETAILS} title={name} />
