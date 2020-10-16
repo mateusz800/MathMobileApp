@@ -2,9 +2,10 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
-import HamburgerBtn from './HamburgerButton'
+import HamburgerBtn from './HamburgerButton';
+import BackBtn from './BackButton';
 import Progress from './Progress';
-import styles from './styles'
+import styles from './styles';
 
 
 /**
@@ -20,12 +21,15 @@ export const barType = {
 /**
  * Bar displayed on top of the screen
  */
-const NavigationBar = ({ title, type, progress, maxProgress }) => {
+const NavigationBar = ({ title, type, progress, maxProgress, navigation }) => {
+    const goBack = () => {
+        navigation.pop();
+    }
     return (
         <View style={styles.container}>
             <View style={styles.leftButton}>
                 {type == barType.DEFAULT && <HamburgerBtn/>}
-                {type != barType.DEFAULT && <HamburgerBtn/>}
+                {type != barType.DEFAULT && <BackBtn goBack={goBack}/>}
             </View>
             <View style={styles.content}>
                 {type == barType.DETAILS && <Text style={styles.title}>{title.toUpperCase()}</Text>}
