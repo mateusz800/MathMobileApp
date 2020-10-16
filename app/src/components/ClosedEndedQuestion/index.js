@@ -2,25 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Button } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
 
+import { realm } from '../../data';
 import { colors } from '../../constants';
 import styles from './styles';
 
 
-const ClosedEndedQuestion = () => {
+const ClosedEndedQuestion = ({exercise}) => {
     const [value, setValue] = useState(-1);
     const [answered, setAnswered] = useState(false);
-    const question = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
     const correctAnswer = 1;
-    const radio_props = [
-        { label: 'odpowiedz 0', value: 0 },
-        { label: 'odpowiedz 1', value: 1 },
-        { label: 'odpowiedz 2', value: 2 },
-        { label: 'odpowiedz 3', value: 3 }
-    ];
+    const radioProps = exercise.answers.map(answer => {
+        return {
+            label: answer, 
+            value: answer
+        };
+    });
     const checkAnswer = () => {
         if (value != -1) {
             // checking answer
-            if (value == correctAnswer) {
+            if (value == exercise.correctAnswer) {
                 setAnswered(true);
             }
             else {
@@ -33,10 +33,10 @@ const ClosedEndedQuestion = () => {
     };
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>{question}</Text>
+            <Text style={styles.text}>{exercise.question}</Text>
             <View style={styles.answers}>
                 <RadioForm
-                    radio_props={radio_props}
+                    radio_props={radioProps}
                     initial={value}
                     onPress={value => setValue(value)}
                     buttonColor={colors.DARK_GRAY}
