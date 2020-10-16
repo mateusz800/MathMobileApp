@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     done: {
         backgroundColor:colors.MAROON,
     }
+    
 });
 
 export default styles;

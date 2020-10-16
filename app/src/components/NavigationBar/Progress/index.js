@@ -9,7 +9,7 @@ const Progress = ({ value, max }) => {
     const rectWidth = (1/(max + 1)) * 100 + "%" ;
     let rects = [];
     for(let i=0;i<max;i++){
-        if(i<value){
+        if(i<=value){
             rects.push(<View style={[styles.rect, styles.done, {width:rectWidth}]} key={i}/>);
         }
         else{

@@ -1,5 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native';
-import { colors } from '../../constants';
+import { colors } from '../../../constants';
 
 
 const styles = StyleSheet.create({
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     },
     answers:{
         marginBottom:20
-    }
+    },
 });
 
 export default styles;

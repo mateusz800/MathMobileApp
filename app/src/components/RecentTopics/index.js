@@ -9,12 +9,12 @@ import { realm } from '../../data';
 
 
 const RecentTopics = ({ navigation }) => {
-    const courses = realm.objects('Course');
-    const cards = courses.map(course => (
+    const topics = realm.objects('Topic');
+    const cards = topics.map(topic => (
         <TouchableWithoutFeedback
-            key={course.id}
-            onPress={() => navigation.navigate('Course details', { name: course.name, imageIdent: course.images[0] })}>
-                <Card imageUrl={course.images[0]} size={'30%'} title={course.name} />
+            key={topic.id}
+            onPress={() => navigation.navigate('Course details', { name: topic.name, imageIdent: topic.image })}>
+                <Card imageUrl={topic.image} size={'30%'} title={topic.name} />
         </TouchableWithoutFeedback>));
     return (
         <View style={styles.container}>
