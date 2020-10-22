@@ -1,29 +1,29 @@
-import React, { useState } from 'react';
-import { Systrace, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 
-import {realm} from '../../data';
+import { realm } from '../../data';
 import NavigationBar, { barType } from '../../components/NavigationBar';
 import Exercise from '../../components/Exercise';
+import { getTopicExercises } from '../../data/exercises';
+import { MAX_LESSON_LENGTH } from '../../constants';
 
-const Lesson = ({navigation}) => {
+const Lesson = ({ navigation }) => {
     const [exerciseIndex, setExerciseIndex] = useState(0);
-    const topic = realm.objects('Topic').filtered("name = 'algebra'")[0];
-    const exercises = topic.exercises;
+    const exercises = useState(getTopicExercises('algebra', MAX_LESSON_LENGTH))[0];
     const nextExercise = () => {
-        console.log(exerciseIndex);
-        if(exerciseIndex+1  < exercises.length){
-            setExerciseIndex(exerciseIndex+1);
+        if (exerciseIndex + 1 < exercises.length) {
+            setExerciseIndex(exerciseIndex + 1);
         }
-        else{
+        else {
             // TODO: end of lesson - show summary
-            console.log('end');
             navigation.pop()
         }
     };
     return (
         <View>
-            <NavigationBar type={barType.LESSON} progress={exerciseIndex} maxProgress={exercises.length} navigation={navigation}/>
-            <Exercise exercise={exercises[exerciseIndex]} nextFunc={nextExercise} last={exerciseIndex+1 == exercises.length? true:false} />
+            <NavigationBar type={barType.LESSON} progress={exerciseIndex} maxProgress={exercises.length} navigation={navigation} />
+            {exercises.length > 0 && <Exercise exercise={exercises[exerciseIndex]} nextFunc={nextExercise} last={exerciseIndex + 1 == exercises.length ? true : false} />}
+
         </View>
     )
 };

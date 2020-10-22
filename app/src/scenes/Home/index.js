@@ -5,6 +5,7 @@ import { ScrollView, View, Button, TouchableWithoutFeedback } from 'react-native
 import NavigationBar from '../../components/NavigationBar'
 import { barType } from '../../components/NavigationBar'
 import RecentTopics from '../../components/RecentTopics/index.js';
+import { clearAllAnswers } from '../../data/exercises';
 
 const Home = ({ navigation }) => {
     return (
@@ -12,6 +13,7 @@ const Home = ({ navigation }) => {
             <NavigationBar type={barType.DEFAULT}/>
             <RecentTopics navigation={navigation}/>
             <Button title='exercise' onPress={()=>navigation.navigate('Lesson')}/>
+            <Button title="clear answers" onPress={clearAllAnswers}/>
         </ScrollView>
     );
 };

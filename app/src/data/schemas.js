@@ -1,22 +1,34 @@
 export const TopicSchema = {
     name: 'Topic',
-    primaryKey: 'id',
+    primaryKey: 'name',
     properties: {
-        id: 'int',
         name: 'string',
         desc: 'string',
         image: 'string',
-        exercises: 'Exercise[]'
     }
 };
 
-export const ExerciseSchema ={
+export const ExerciseSchema = {
     name: 'Exercise',
     primaryKey: 'id',
-    properties:{
-        id:'int',
-        question:'string',
-        correctAnswer:'string',
-        answers: 'string[]'
+    properties: {
+        id: 'int',
+        topic: 'Topic',
+        question: 'string',
+        correctAnswer: 'string',
+        answers: 'string[]',
+        solved: { type: 'bool', default: false }
+
+    }
+}
+
+export const AnswerSchema = {
+    name: 'Answer',
+    primaryKey: 'exercise_id',
+    properties: {
+        exercise_id: 'int',
+        solved: { type: 'bool', default: false },
+        answer_date: 'int',
+        incorrect_answer_count: { type: 'int', default: 0 }
     }
 }

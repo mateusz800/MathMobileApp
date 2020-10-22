@@ -4,15 +4,14 @@ import PropTypes from 'prop-types';
 
 
 import ClosedEndedQuestion from './ClosedEndedQuestion';
-import { colors } from '../../constants'
+import {saveAnswer} from '../../data/exercises';
+import { colors } from '../../constants';
 import StatusBar from '../MessageBar';
 
 const exerciseType = {
     CLOSED_ENDED: 0,
     OPEN: 1
 }
-
-
 
 
 const Exercise = ({ exercise, last, nextFunc }) => {
@@ -25,11 +24,12 @@ const Exercise = ({ exercise, last, nextFunc }) => {
             setAnswered(true);
             if (currentAnswer == exercise.correctAnswer) {
                 setStatusMessage('✓ Poprawna odpowiedź');
-                // TODO: save in db
+                saveAnswer(exercise.id, true);
             }
             else {
                 setStatusMessage('✗ Zła odpowiedź');
-                // TODO: save in db
+                saveAnswer(exercise.id, false);
+
             }
             setCurrentAnswer(-1);
         }
@@ -54,7 +54,7 @@ const Exercise = ({ exercise, last, nextFunc }) => {
 }
 
 Exercise.propTypes = {
-    exercise: PropTypes.object,
+    exercise: PropTypes.object.isRequired,
     last: PropTypes.bool
 }
 export default Exercise;
