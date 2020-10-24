@@ -12,7 +12,6 @@ const Home = ({ navigation }) => {
         <ScrollView>
             <NavigationBar type={barType.DEFAULT}/>
             <RecentTopics navigation={navigation}/>
-            <Button title='exercise' onPress={()=>navigation.navigate('Lesson')}/>
             <Button title="clear answers" onPress={clearAllAnswers}/>
         </ScrollView>
     );

@@ -8,3 +8,7 @@ export const colors = {
 };
 
 export const MAX_LESSON_LENGTH = 5
+
+export const config = {
+    API_URL: 'http://192.168.1.69:8125'
+}

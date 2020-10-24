@@ -22,7 +22,8 @@ const Card = ({ imageUrl, size, title }) => {
                 colors={[colors.MAROON, 'rgba(255,255,255,0)']}
                 end={{ x: 0.5, y: 1.5 }} 
                 style={[styles.card, size && { height: size }]}>
-                    <Image source={images[imageUrl]} style={{width:'50%', height:'50%'}}/>
+                    {/*<Image source={images[imageUrl]} style={{width:'50%', height:'50%'}}/>*/}
+                    <Image source={{uri: imageUrl}} style={{width:'50%', height:'50%'}}/>
                 {/*<SvgUri uri={imageUrl} width="50%" height="50%" />*/}
             </LinearGradient>
             <Text style={styles.title}>{title}</Text>

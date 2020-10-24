@@ -4,7 +4,8 @@ import { ExerciseSchema, AnswerSchema, TopicSchema } from './schemas';
 
 
 export const getTopicExercises = (topicName, amount) => {
-    return realm.objects('Exercise').filtered("topic.name = 'algebra' && solved=false").slice(0, amount);
+    return realm.objects('Exercise').filtered(`topic.name = '${topicName}' && solved=false`).slice(0, amount);
+    
 };
 
 
@@ -47,13 +48,11 @@ export const clearAllAnswers = () => {
     Realm.open({ schema: [AnswerSchema, ExerciseSchema, TopicSchema] }).then(realm => {
         realm.write(() => {
             realm.objects('Answer').map(obj => {
-                console.log('ok');
                 if (obj != undefined) {
-                    console.log(obj);
                     realm.delete(obj);
                 }
             });
-            realm.objects('Exercise').map(obj => { obj.solved = false ; console.log(obj)});
+            realm.objects('Exercise').map(obj => { obj.solved = false ; });
         })
     });
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, View, Text, Button } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
@@ -6,16 +6,27 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import Card from '../Card';
 import styles from './styles'
 import { realm } from '../../data';
+import { getOfflineTopics, getTopics } from '../../data/topics';
 
 
 const RecentTopics = ({ navigation }) => {
-    const topics = realm.objects('Topic');
-    const cards = topics.map(topic => (
+    const [topics, setTopics] = useState(getOfflineTopics);
+    const [loaded, setLoaded] = useState(false);
+    useEffect(()=>{
+        if(!loaded){
+            console.log("ok");
+            getTopics(setTopics);
+            setLoaded(true);
+        }
+    })
+    
+    let cards = topics.map(topic => (
         <TouchableWithoutFeedback
-            key={topic.id}
-            onPress={() => navigation.navigate('Course details', { name: topic.name, imageIdent: topic.image })}>
-                <Card imageUrl={topic.image} size={'30%'} title={topic.name} />
-        </TouchableWithoutFeedback>));
+            key={topic.name}
+            onPress={() => navigation.navigate('Course details', { topic: topic })}>
+            <Card imageUrl={topic.image} size={'30%'} title={topic.name}  key={topic.name}/>
+        </TouchableWithoutFeedback>
+    ));
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Ostatnie tematy</Text>
