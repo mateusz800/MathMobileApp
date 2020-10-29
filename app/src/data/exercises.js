@@ -1,12 +1,37 @@
+import axios from 'axios';
 
 import { realm } from './index';
+import { config } from '../constants'
 import { ExerciseSchema, AnswerSchema, TopicSchema } from './schemas';
 
 
-export const getTopicExercises = (topicName, amount) => {
-    return realm.objects('Exercise').filtered(`topic.name = '${topicName}' && solved=false`).slice(0, amount);
-    
+export const getOfflineTopicExercises = (topicName, amount) => {
+    return realm.objects('Exercise').filtered(`topic.name = '${topicName}' && solved=false`).slice(0, amount)[0];
+}
+
+export const getTopicExercises = (setState, topicName, amount) => {
+
+    return axios.get(`${config.API_URL}/exercises?topic=${topicName}&pageSize=${amount}`)
+        .then(response => {
+            console.log(response.data.content)
+            const topics = response.data.content.map(topic => {
+                return {
+                    id: 1, // TODO
+                    topic: topic.topic,
+                    question: topic.question,
+                    correctAnswer: topic.correctAnswer,
+                    answers: topic.otherAnswers.concat(topic.correctAnswer)
+                }
+            });
+            console.log(topics)
+            setState(topics);
+        })
+        .catch(error => {
+            setState(getOfflineTopicExercises(topicName, amount));
+        });
 };
+
+
 
 
 export const saveAnswer = (exerciseId, solved) => {
@@ -52,7 +77,7 @@ export const clearAllAnswers = () => {
                     realm.delete(obj);
                 }
             });
-            realm.objects('Exercise').map(obj => { obj.solved = false ; });
+            realm.objects('Exercise').map(obj => { obj.solved = false; });
         })
     });
 }

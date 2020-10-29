@@ -11,7 +11,6 @@ import styles from './styles';
 
 const CourseDetails = ({ route, navigation }) => {
     const { topic } = route.params;
-    console.log(topic.image)
     return (
         <ScrollView>
             <NavigationBar type={barType.DETAILS} title={topic.name} navigation={navigation} />
@@ -33,7 +32,7 @@ const CourseDetails = ({ route, navigation }) => {
                 <Text>{topic.desc}</Text>
             </View>
             <View style={styles.learnBtnContainer}>
-                <TouchableWithoutFeedback style={styles.learnBtn} onPress={() => navigation.navigate('Lesson')}>
+                <TouchableWithoutFeedback style={styles.learnBtn} onPress={() => navigation.navigate('Lesson', { topic: topic.name })}>
                     <Text style={styles.learnBtnText}>Ucz się</Text>
                 </TouchableWithoutFeedback>
             </View>
