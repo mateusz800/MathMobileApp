@@ -14,11 +14,10 @@ const RecentTopics = ({ navigation }) => {
     const [loaded, setLoaded] = useState(false);
     useEffect(()=>{
         if(!loaded){
-            console.log("ok");
             getTopics(setTopics);
             setLoaded(true);
         }
-    })
+    });
     
     let cards = topics.map(topic => (
         <TouchableWithoutFeedback

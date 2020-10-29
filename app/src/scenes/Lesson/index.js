@@ -8,7 +8,6 @@ import { MAX_LESSON_LENGTH } from '../../constants';
 
 const Lesson = ({ route, navigation }) => {
     const { topic } = route.params;
-    console.log(topic);
     const [exerciseIndex, setExerciseIndex] = useState(0);
     const [exercises, setExercises] = useState(getOfflineTopicExercises(topic, MAX_LESSON_LENGTH));
     const [loaded, setLoaded] = useState(false);

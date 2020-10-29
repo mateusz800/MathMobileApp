@@ -13,17 +13,15 @@ export const getTopicExercises = (setState, topicName, amount) => {
 
     return axios.get(`${config.API_URL}/exercises?topic=${topicName}&pageSize=${amount}`)
         .then(response => {
-            console.log(response.data.content)
             const topics = response.data.content.map(topic => {
                 return {
-                    id: 1, // TODO
+                    id: topic.id,
                     topic: topic.topic,
                     question: topic.question,
                     correctAnswer: topic.correctAnswer,
                     answers: topic.otherAnswers.concat(topic.correctAnswer)
                 }
             });
-            console.log(topics)
             setState(topics);
         })
         .catch(error => {
@@ -35,37 +33,31 @@ export const getTopicExercises = (setState, topicName, amount) => {
 
 
 export const saveAnswer = (exerciseId, solved) => {
-    let answerObj;
-    try {
-        answerObj = realm.objectForPrimaryKey('Answer', exerciseId);
-    }
-    catch (e) {
-        answerObj = null;
-    }
 
     Realm.open({ schema: [AnswerSchema, ExerciseSchema, TopicSchema] }).then(realm => {
-        if (solved) {
-            realm.write(() => {
-                realm.objectForPrimaryKey('Exercise', exerciseId).solved = true;
-            });
-        }
-        if (!answerObj) {
-            // create new one
-            realm.write(() => {
-                let answer = realm.create('Answer', {
+        realm.write(() => {
+            let answerObj;
+            try {
+                answerObj = realm.objectForPrimaryKey('Answer', exerciseId);
+                //answerObj = realm.objects("Answer").find(`id = ${exerciseId}`)
+            }
+            catch (e) {
+                answerObj = null
+            }
+            if (!answerObj) {
+                // create new one
+                realm.create('Answer', {
                     exercise_id: exerciseId,
                     solved: solved,
                     answer_date: Date.now(),
+                    incorect_answer_count: solved ? 0 : 1
                 });
-            });
-        }
-        else {
-            // update
-            realm.write(() => {
+            }
+            else {
                 answerObj.incorect_answer_count += 1;
                 answerObj.answer_date = Date.now();
-            });
-        }
+            }
+        });
     });
 };
 
