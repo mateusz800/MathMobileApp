@@ -10,11 +10,12 @@ const LoginForm = ({ changeToRegisterFunc, navigateToHome }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const login = () => {
-        const result = authenticate(email, password);
+    async function login (){
+        const result =  await authenticate(email, password);
         console.log("result: " + result);
-        if(result){
+        if(result == true){
             navigateToHome();
+            return;
         }
         // TODO: show message - login failed
         console.log("login failed");

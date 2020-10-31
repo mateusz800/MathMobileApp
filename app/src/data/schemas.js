@@ -3,6 +3,7 @@ export const AuthSchema = {
     primaryKey: 'id',
     properties: {
         id: 'int',
+        authenticated: 'bool',
         email: 'string',
         password: 'string',
         jwt: 'string'

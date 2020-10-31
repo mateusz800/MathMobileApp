@@ -10,6 +10,7 @@ export const initRealmDatabase = () => {
 
             let authentication = realm.create('Auth', {
                 id: 7,
+                authenticated: false,
                 email: "",
                 password: "",
                 jwt:""

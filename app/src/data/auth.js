@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { config } from '../constants'
 
-import { AuthSchema, CourseSchema, ExerciseSchema } from './schemas';
+import { AuthSchema } from './schemas';
 
 const realm = new Realm({ schema: [AuthSchema] });
 
@@ -24,19 +24,14 @@ export const authenticate = (email, password) => {
 
 const getAuthObject = () => {
     return realm.objects('Auth')[0];
-
-
-
 }
 
 
 const updateJWT = (jwt) => {
-    console.log("before");
     let auth = getAuthObject();
-    console.log("update");
-    console.log(auth);
     realm.write(() => {
         auth.jwt = jwt;
+        auth.authenticated = true;
     });
 }
 
