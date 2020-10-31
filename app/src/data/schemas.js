@@ -1,5 +1,5 @@
-export const TopicSchema = {
-    name: 'Topic',
+export const courseSchema = {
+    name: 'course',
     primaryKey: 'name',
     properties: {
         name: 'string',
@@ -13,7 +13,7 @@ export const ExerciseSchema = {
     primaryKey: 'id',
     properties: {
         id: 'int',
-        topic: 'Topic',
+        course: 'course',
         question: 'string',
         correctAnswer: 'string',
         answers: 'string[]',

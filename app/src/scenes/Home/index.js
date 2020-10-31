@@ -4,14 +4,14 @@ import { ScrollView, View, Button, TouchableWithoutFeedback } from 'react-native
 
 import NavigationBar from '../../components/NavigationBar'
 import { barType } from '../../components/NavigationBar'
-import RecentTopics from '../../components/RecentTopics/index.js';
+import RecentCourses from '../../components/RecentCourses/index.js';
 import { clearAllAnswers } from '../../data/exercises';
 
 const Home = ({ navigation }) => {
     return (
         <ScrollView>
             <NavigationBar type={barType.DEFAULT}/>
-            <RecentTopics navigation={navigation}/>
+            <RecentCourses navigation={navigation}/>
             <Button title="clear answers" onPress={clearAllAnswers}/>
         </ScrollView>
     );

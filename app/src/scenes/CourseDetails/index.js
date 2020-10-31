@@ -10,29 +10,29 @@ import styles from './styles';
 
 
 const CourseDetails = ({ route, navigation }) => {
-    const { topic } = route.params;
+    const { course } = route.params;
     return (
         <ScrollView>
-            <NavigationBar type={barType.DETAILS} title={topic.name} navigation={navigation} />
+            <NavigationBar type={barType.DETAILS} title={course.name} navigation={navigation} />
             <LinearGradient
                 colors={['rgba(255,255,255,0)', colors.MAROON]}
                 start={{ x: 0.5, y: -1.5 }}
                 end={{ x: 0.5, y: 1.5 }}
             >
                 <View style={styles.imageContainer}>
-                    <Image source={{ uri: topic.image }} style={{ width: '50%', height: Dimensions.get("window").width * 0.5, margin: '15%' }} />
+                    <Image source={{ uri: course.image }} style={{ width: '50%', height: Dimensions.get("window").width * 0.5, margin: '15%' }} />
                 </View>
             </LinearGradient>
             <View style={styles.titleContainer}>
                 <View style={styles.title}>
-                    <Text style={styles.titleText}>{topic.name.toUpperCase()}</Text>
+                    <Text style={styles.titleText}>{course.name.toUpperCase()}</Text>
                 </View>
             </View>
             <View style={styles.descContainer}>
-                <Text>{topic.desc}</Text>
+                <Text>{course.desc}</Text>
             </View>
             <View style={styles.learnBtnContainer}>
-                <TouchableWithoutFeedback style={styles.learnBtn} onPress={() => navigation.navigate('Lesson', { topic: topic.name })}>
+                <TouchableWithoutFeedback style={styles.learnBtn} onPress={() => navigation.navigate('Lesson', { course: course.name })}>
                     <Text style={styles.learnBtnText}>Ucz się</Text>
                 </TouchableWithoutFeedback>
             </View>

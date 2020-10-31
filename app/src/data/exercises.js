@@ -2,30 +2,30 @@ import axios from 'axios';
 
 import { realm } from './index';
 import { config } from '../constants'
-import { ExerciseSchema, AnswerSchema, TopicSchema } from './schemas';
+import { ExerciseSchema, AnswerSchema, courseSchema } from './schemas';
 
 
-export const getOfflineTopicExercises = (topicName, amount) => {
-    return realm.objects('Exercise').filtered(`topic.name = '${topicName}' && solved=false`).slice(0, amount)[0];
+export const getOfflineCourseExercises = (courseName, amount) => {
+    return realm.objects('Exercise').filtered(`course.name = '${courseName}' && solved=false`).slice(0, amount)[0];
 }
 
-export const getTopicExercises = (setState, topicName, amount) => {
+export const getCourseExercises = (setState, courseName, amount) => {
 
-    return axios.get(`${config.API_URL}/exercises?topic=${topicName}&pageSize=${amount}`)
+    return axios.get(`${config.API_URL}/exercises?course=${courseName}&pageSize=${amount}`)
         .then(response => {
-            const topics = response.data.content.map(topic => {
+            const exercises = response.data.content.map(exercise => {
                 return {
-                    id: topic.id,
-                    topic: topic.topic,
-                    question: topic.question,
-                    correctAnswer: topic.correctAnswer,
-                    answers: topic.otherAnswers.concat(topic.correctAnswer)
+                    id: exercise.id,
+                    course: exercise.course,
+                    question: exercise.question,
+                    correctAnswer: exercise.correctAnswers[0],
+                    answers: exercise.otherAnswers.concat(exercise.correctAnswers[0])
                 }
             });
-            setState(topics);
+            setState(exercises);
         })
         .catch(error => {
-            setState(getOfflineTopicExercises(topicName, amount));
+            setState(getOfflineCourseExercises(courseName, amount));
         });
 };
 
@@ -34,7 +34,7 @@ export const getTopicExercises = (setState, topicName, amount) => {
 
 export const saveAnswer = (exerciseId, solved) => {
 
-    Realm.open({ schema: [AnswerSchema, ExerciseSchema, TopicSchema] }).then(realm => {
+    Realm.open({ schema: [AnswerSchema, ExerciseSchema, courseSchema] }).then(realm => {
         realm.write(() => {
             let answerObj;
             try {
@@ -62,7 +62,7 @@ export const saveAnswer = (exerciseId, solved) => {
 };
 
 export const clearAllAnswers = () => {
-    Realm.open({ schema: [AnswerSchema, ExerciseSchema, TopicSchema] }).then(realm => {
+    Realm.open({ schema: [AnswerSchema, ExerciseSchema, courseSchema] }).then(realm => {
         realm.write(() => {
             realm.objects('Answer').map(obj => {
                 if (obj != undefined) {

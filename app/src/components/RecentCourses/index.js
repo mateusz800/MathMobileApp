@@ -5,25 +5,23 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 import Card from '../Card';
 import styles from './styles'
-import { realm } from '../../data';
-import { getOfflineTopics, getTopics } from '../../data/topics';
+import { getOfflineCourses, getCourses } from '../../data/courses';
 
 
-const RecentTopics = ({ navigation }) => {
-    const [topics, setTopics] = useState(getOfflineTopics);
+const RecentCourses = ({ navigation }) => {
+    const [courses, setCourses] = useState(getOfflineCourses);
     const [loaded, setLoaded] = useState(false);
     useEffect(()=>{
         if(!loaded){
-            getTopics(setTopics);
+            getCourses(setCourses);
             setLoaded(true);
         }
     });
-    
-    let cards = topics.map(topic => (
+    let cards = courses.map(course => (
         <TouchableWithoutFeedback
-            key={topic.name}
-            onPress={() => navigation.navigate('Course details', { topic: topic })}>
-            <Card imageUrl={topic.image} size={'30%'} title={topic.name}  key={topic.name}/>
+            key={course.name}
+            onPress={() => navigation.navigate('Course details', { course: course })}>
+            <Card imageUrl={course.image} size={'30%'} title={course.name}  key={course.name}/>
         </TouchableWithoutFeedback>
     ));
     return (
@@ -41,5 +39,5 @@ const RecentTopics = ({ navigation }) => {
 };
 
 
-export default RecentTopics;
+export default RecentCourses;
 

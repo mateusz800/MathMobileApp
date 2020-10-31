@@ -32,8 +32,8 @@ const Card = ({ imageUrl, size, title }) => {
 };
 
 Card.propTypes = {
-    // url to svg image
-    //imageUrl: PropTypes.string.isRequired,
+    // url to  image
+    imageUrl: PropTypes.string.isRequired,
     /**
      * Size of the component
      * It might be number or if value is in % - string

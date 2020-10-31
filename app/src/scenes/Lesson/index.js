@@ -3,17 +3,17 @@ import { View } from 'react-native';
 
 import NavigationBar, { barType } from '../../components/NavigationBar';
 import Exercise from '../../components/Exercise';
-import { getOfflineTopicExercises, getTopicExercises } from '../../data/exercises';
+import { getOfflineCourseExercises, getCourseExercises } from '../../data/exercises';
 import { MAX_LESSON_LENGTH } from '../../constants';
 
 const Lesson = ({ route, navigation }) => {
-    const { topic } = route.params;
+    const { course } = route.params;
     const [exerciseIndex, setExerciseIndex] = useState(0);
-    const [exercises, setExercises] = useState(getOfflineTopicExercises(topic, MAX_LESSON_LENGTH));
+    const [exercises, setExercises] = useState(getOfflineCourseExercises(course, MAX_LESSON_LENGTH));
     const [loaded, setLoaded] = useState(false);
     useEffect(() => {
         if (!loaded) {
-            getTopicExercises(setExercises, topic, MAX_LESSON_LENGTH);
+            getCourseExercises(setExercises, course, MAX_LESSON_LENGTH);
             setLoaded(true);
         }
     });
