@@ -34,7 +34,7 @@ export const getCourseExercises = (setState, courseName, amount) => {
 
 export const saveAnswer = (exerciseId, solved) => {
 
-    Realm.open({ schema: [AnswerSchema, ExerciseSchema, courseSchema] }).then(realm => {
+    Realm.open({ schema: [AnswerSchema, ExerciseSchema, CourseSchema] }).then(realm => {
         realm.write(() => {
             let answerObj;
             try {

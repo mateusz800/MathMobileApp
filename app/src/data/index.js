@@ -1,14 +1,22 @@
 import Realm from 'realm';
 
-import { CourseSchema, ExerciseSchema, AnswerSchema } from './schemas'
+import { CourseSchema, ExerciseSchema, AnswerSchema, AuthSchema } from './schemas'
 
 export const realm = new Realm({ schema: [CourseSchema, ExerciseSchema, AnswerSchema] });
 
 export const initRealmDatabase = () => {
-    Realm.open({ schema: [CourseSchema, ExerciseSchema] }).then(realm => {
+    Realm.open({ schema: [CourseSchema, ExerciseSchema, AuthSchema] }).then(realm => {
         realm.write(() => {
+
+            let authentication = realm.create('Auth', {
+                id: 7,
+                email: "",
+                password: "",
+                jwt:""
+            });
+
             // courses
-            let algebracourse = realm.create('course', {
+            let algebracourse = realm.create('Course', {
                 name: 'algebra',
                 desc: 'Zapoznaj się z algebrą',
                 image: 'functions',
@@ -58,6 +66,8 @@ export const initRealmDatabase = () => {
                 answers: ['Jakaś odpowiedź 1', 'Jakaś odpowiedź 2', 'Jakaś odpowiedź 3', 'Jakaś odpowiedź 4'],
                 course:algebracourse
             });
+
+            
             
         });
         realm.close();

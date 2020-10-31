@@ -14,17 +14,17 @@ const Type = {
 
 const LoginScene = ({ route, navigation }) => {
     const [type, setType] = useState(Type.LOGIN)
-    function changeForm () {
-        if(type == Type.LOGIN){
-            setType(Type.REGISTER)
-        }
+
+    const navigateToHome = () => {
+        navigation.navigate('Home');
     }
+
     return (
         <View style={styles.container}>
             <Image source={logo} style={styles.logo} />
             <Text style={styles.appName}>Nazwa aplikacji</Text>
             <Text style={styles.appDesc}>Aplikacja do nauki matematyki</Text>
-            {type == Type.LOGIN && <LoginForm  changeToRegisterFunc={( )=> changeForm}/>}
+            {type == Type.LOGIN && <LoginForm  changeToRegisterFunc={null} navigateToHome={navigateToHome}/>}
         </View>
     );
 };

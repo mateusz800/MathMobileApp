@@ -1,6 +1,8 @@
 export const AuthSchema = {
-    name: "Auth",
+    name: 'Auth',
+    primaryKey: 'id',
     properties: {
+        id: 'int',
         email: 'string',
         password: 'string',
         jwt: 'string'

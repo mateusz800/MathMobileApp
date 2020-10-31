@@ -19,5 +19,5 @@ export const getCourses = (setState) => {
 
 
 export const getOfflineCourses = () => {
-    return realm.objects('course');
+    return realm.objects('Course');
 }
