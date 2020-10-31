@@ -22,6 +22,28 @@ export const authenticate = (email, password) => {
     });
 };
 
+export const register = (email, password) => {
+    console.log(email);
+    console.log(password);
+    return axios({
+        method:'POST',
+        url:`${config.API_URL}/register`,
+        data:{
+            'email':email,
+            'password':password
+        }
+    }).then(response => {
+        return true;
+    }).catch(error => {
+        console.log(error);
+        return false;
+    });
+};
+
+export const getJWT = () => {
+    return getAuthObject().jwt;
+};
+
 const getAuthObject = () => {
     return realm.objects('Auth')[0];
 }

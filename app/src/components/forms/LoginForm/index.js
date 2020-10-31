@@ -6,7 +6,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { authenticate } from '../.,/../../../data/auth'
 import styles from './styles';
 
-const LoginForm = ({ changeToRegisterFunc, navigateToHome }) => {
+const LoginForm = ({ changeToRegister, navigateToHome }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -31,7 +31,7 @@ const LoginForm = ({ changeToRegisterFunc, navigateToHome }) => {
             </TouchableWithoutFeedback>
             <View style={styles.changeTypeMessage}>
                 <Text>Nie masz konta?</Text>
-                <TouchableWithoutFeedback onPress={changeToRegisterFunc} >
+                <TouchableWithoutFeedback onPress={changeToRegister} >
                     <Text style={styles.registerLink}>Zarejestruj się</Text>
                 </TouchableWithoutFeedback>
             </View>

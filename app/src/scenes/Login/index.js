@@ -1,10 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
-import { View, Image, Text, TextInput } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { View, Image, Text } from 'react-native';
 
-import logo from '../../assets/images/logo.png';
 import LoginForm from '../../components/forms/LoginForm';
+import RegisterForm from '../../components/forms/RegisterForm';
+import logo from '../../assets/images/logo.png';
 import styles from './styles';
 
 const Type = {
@@ -13,6 +13,7 @@ const Type = {
 }
 
 const LoginScene = ({ route, navigation }) => {
+    // TODO: navigate to home if user is logged
     const [type, setType] = useState(Type.LOGIN)
 
     const navigateToHome = () => {
@@ -24,7 +25,8 @@ const LoginScene = ({ route, navigation }) => {
             <Image source={logo} style={styles.logo} />
             <Text style={styles.appName}>Nazwa aplikacji</Text>
             <Text style={styles.appDesc}>Aplikacja do nauki matematyki</Text>
-            {type == Type.LOGIN && <LoginForm  changeToRegisterFunc={null} navigateToHome={navigateToHome}/>}
+            {type == Type.LOGIN && <LoginForm changeToRegister={()=>setType(Type.REGISTER)} navigateToHome={navigateToHome} />}
+            {type == Type.REGISTER && <RegisterForm changeToLogin={()=>setType(Type.LOGIN)} />}
         </View>
     );
 };
