@@ -1,11 +1,11 @@
 import Realm from 'realm';
 
-import { courseSchema, ExerciseSchema, AnswerSchema } from './schemas'
+import { CourseSchema, ExerciseSchema, AnswerSchema } from './schemas'
 
-export const realm = new Realm({ schema: [courseSchema, ExerciseSchema, AnswerSchema] });
+export const realm = new Realm({ schema: [CourseSchema, ExerciseSchema, AnswerSchema] });
 
 export const initRealmDatabase = () => {
-    Realm.open({ schema: [courseSchema, ExerciseSchema] }).then(realm => {
+    Realm.open({ schema: [CourseSchema, ExerciseSchema] }).then(realm => {
         realm.write(() => {
             // courses
             let algebracourse = realm.create('course', {

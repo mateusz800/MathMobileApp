@@ -1,5 +1,15 @@
-export const courseSchema = {
-    name: 'course',
+export const AuthSchema = {
+    name: "Auth",
+    properties: {
+        email: 'string',
+        password: 'string',
+        jwt: 'string'
+    }
+};
+
+
+export const CourseSchema = {
+    name: 'Course',
     primaryKey: 'name',
     properties: {
         name: 'string',
@@ -13,7 +23,7 @@ export const ExerciseSchema = {
     primaryKey: 'id',
     properties: {
         id: 'int',
-        course: 'course',
+        course: 'Course',
         question: 'string',
         correctAnswer: 'string',
         answers: 'string[]',
