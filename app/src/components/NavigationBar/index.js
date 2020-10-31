@@ -21,14 +21,14 @@ export const barType = {
 /**
  * Bar displayed on top of the screen
  */
-const NavigationBar = ({ title, type, progress, maxProgress, navigation }) => {
+const NavigationBar = ({ title, type, progress, maxProgress, navigation, toogleMenu }) => {
     const goBack = () => {
         navigation.pop();
     }
     return (
         <View style={styles.container}>
             <View style={styles.leftButton}>
-                {type == barType.DEFAULT && <HamburgerBtn/>}
+                {type == barType.DEFAULT && <HamburgerBtn click={toogleMenu}/>}
                 {type != barType.DEFAULT && <BackBtn goBack={goBack}/>}
             </View>
             <View style={styles.content}>

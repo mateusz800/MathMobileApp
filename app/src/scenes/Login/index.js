@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, Image, Text, AppState } from 'react-native';
 
 import LoginForm from '../../components/forms/LoginForm';
 import RegisterForm from '../../components/forms/RegisterForm';
@@ -15,7 +15,6 @@ const Type = {
 const LoginScene = ({ route, navigation }) => {
     // TODO: navigate to home if user is logged
     const [type, setType] = useState(Type.LOGIN)
-
     const navigateToHome = () => {
         navigation.navigate('Home');
     }
