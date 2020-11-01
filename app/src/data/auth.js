@@ -16,6 +16,7 @@ export const authenticate = (email, password) => {
         }
     }).then(response => {
         updateJWT(response.headers.jwt);
+        updateCredentials(email, password);
         return true;
     }).catch(error => {
         return false;
@@ -23,8 +24,6 @@ export const authenticate = (email, password) => {
 };
 
 export const register = (email, password) => {
-    console.log(email);
-    console.log(password);
     return axios({
         method:'POST',
         url:`${config.API_URL}/register`,
@@ -40,9 +39,21 @@ export const register = (email, password) => {
     });
 };
 
+export const logout = () => {
+    let auth = getAuthObject();
+    realm.write(() => {
+        auth.authenticated = false;
+        auth.jwt = "";
+    });
+};
+
 export const getJWT = () => {
     return getAuthObject().jwt;
 };
+
+export const isAuthenticated = () => {
+    return getAuthObject().authenticated;
+}
 
 const getAuthObject = () => {
     return realm.objects('Auth')[0];
@@ -54,6 +65,14 @@ const updateJWT = (jwt) => {
     realm.write(() => {
         auth.jwt = jwt;
         auth.authenticated = true;
+    });
+}
+
+const updateCredentials = (email, password) => {
+    let auth = getAuthObject();
+    realm.write(() => {
+        auth.email = email;
+        auth.password = password;
     });
 }
 

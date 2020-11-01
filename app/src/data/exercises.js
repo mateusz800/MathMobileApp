@@ -2,7 +2,8 @@ import axios from 'axios';
 
 import { realm } from './index';
 import { config } from '../constants'
-import { ExerciseSchema, AnswerSchema, courseSchema } from './schemas';
+import { ExerciseSchema, AnswerSchema, CourseSchema } from './schemas';
+import { getJWT } from './auth';
 
 
 export const getOfflineCourseExercises = (courseName, amount) => {
@@ -11,19 +12,23 @@ export const getOfflineCourseExercises = (courseName, amount) => {
 
 export const getCourseExercises = (setState, courseName, amount) => {
 
-    return axios.get(`${config.API_URL}/exercises?course=${courseName}&pageSize=${amount}`)
-        .then(response => {
-            const exercises = response.data.content.map(exercise => {
-                return {
-                    id: exercise.id,
-                    course: exercise.course,
-                    question: exercise.question,
-                    correctAnswer: exercise.correctAnswers[0],
-                    answers: exercise.otherAnswers.concat(exercise.correctAnswers[0])
-                }
-            });
-            setState(exercises);
-        })
+    return axios({
+        url: `${config.API_URL}/exercises?course=${courseName}&pageSize=${amount}`,
+        headers: {
+            Authorization: `Bearer ${getJWT()}`
+        }
+    }).then(response => {
+        const exercises = response.data.content.map(exercise => {
+            return {
+                id: exercise.id,
+                course: exercise.course,
+                question: exercise.question,
+                correctAnswer: exercise.correctAnswers[0],
+                answers: exercise.otherAnswers.concat(exercise.correctAnswers[0])
+            }
+        });
+        setState(exercises);
+    })
         .catch(error => {
             setState(getOfflineCourseExercises(courseName, amount));
         });
