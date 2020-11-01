@@ -12,8 +12,9 @@ const LoginForm = ({ changeToRegister, navigateToHome }) => {
 
     async function login (){
         const result =  await authenticate(email, password);
-        console.log("result: " + result);
         if(result == true){
+            setEmail("");
+            setPassword("");
             navigateToHome();
             return;
         }
@@ -24,8 +25,8 @@ const LoginForm = ({ changeToRegister, navigateToHome }) => {
 
     return (
         <View style={styles.form}>
-            <TextInput style={styles.input} placeholder="adres e-mail" onChangeText={text => setEmail(text)} label="email" />
-            <TextInput style={styles.input} placeholder="hasło" onChangeText={text => setPassword(text)} />
+            <TextInput style={styles.input} placeholder="adres e-mail" value={email} onChangeText={text => setEmail(text)} label="email" />
+            <TextInput style={styles.input} placeholder="hasło" value={password} onChangeText={text => setPassword(text)} secureTextEntry={true} />
             <TouchableWithoutFeedback style={styles.loginBtn} onPress={login}>
                 <Text style={styles.loginText}>Zaloguj się</Text>
             </TouchableWithoutFeedback>

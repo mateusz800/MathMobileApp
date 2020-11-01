@@ -8,7 +8,7 @@ export const initRealmDatabase = () => {
     Realm.open({ schema: [CourseSchema, ExerciseSchema, AuthSchema] }).then(realm => {
         realm.write(() => {
 
-            let authentication = realm.create('Auth', {
+            realm.create('Auth', {
                 id: 7,
                 authenticated: false,
                 email: "",

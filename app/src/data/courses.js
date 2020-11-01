@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-import {realm} from './index';
-import {config} from '../constants'
-import { getJWT } from './auth';
+import { realm } from './index';
+import { config } from '../constants'
+import { authenticate, getCredentails, getJWT } from './auth';
 
 /**
  * 
@@ -11,20 +11,25 @@ import { getJWT } from './auth';
 export const getCourses = (setState) => {
     console.log(getJWT());
     return axios({
-        method:'GET',
-        url:`${config.API_URL}/courses`,
-        headers:{
+        method: 'GET',
+        url: `${config.API_URL}/courses`,
+        headers: {
             Authorization: `Bearer ${getJWT()}`
         }
     })
-    .then(response => {
-        setState(response.data.content);
-    })
-    .catch(error => {
-        console.log("Get courses error");
-        console.log(error);
-        setState(getOfflineCourses());
-    });
+        .then(response => {
+            setState(response.data.content);
+        })
+        .catch(error => {
+            if (error.response.status == 401) {
+                authenticate(getCredentails());
+                getCourses(setState);
+            }
+            else {
+                setState(getOfflineCourses());
+            }
+
+        });
 };
 
 

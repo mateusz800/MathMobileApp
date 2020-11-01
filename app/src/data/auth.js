@@ -6,6 +6,7 @@ import { AuthSchema } from './schemas';
 
 const realm = new Realm({ schema: [AuthSchema] });
 
+
 export const authenticate = (email, password) => {
     return axios({
         method: 'POST',
@@ -52,7 +53,16 @@ export const getJWT = () => {
 };
 
 export const isAuthenticated = () => {
+    const auth = getAuthObject();
+    if(!auth){
+        return false;
+    }
     return getAuthObject().authenticated;
+}
+
+export const getCredentails = () => {
+    const auth = getAuthObject();
+    return auth.email, auth.email;
 }
 
 const getAuthObject = () => {

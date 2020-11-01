@@ -30,7 +30,13 @@ export const getCourseExercises = (setState, courseName, amount) => {
         setState(exercises);
     })
         .catch(error => {
-            setState(getOfflineCourseExercises(courseName, amount));
+            if (error.response.status == 401) {
+                authenticate(getCredentails());
+                getCourseExercises = (setState, courseName, amount);
+            }
+            else {
+                setState(getOfflineCourseExercises(courseName, amount));
+            }
         });
 };
 

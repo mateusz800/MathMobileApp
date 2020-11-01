@@ -38,8 +38,8 @@ const RegisterForm = ({ changeToLogin, navigateToHome }) => {
     return (
         <View style={styles.form}>
             <TextInput style={styles.input} placeholder="adres e-mail" onChangeText={text => setEmail(text)} label="email" />
-            <TextInput style={styles.input} placeholder="hasło" onChangeText={text => setPassword(text)} />
-            <TextInput style={styles.input} placeholder="powtórz hasło" onChangeText={text => checkRepeatPassword(text)} />
+            <TextInput style={styles.input} placeholder="hasło" onChangeText={text => setPassword(text)} secureTextEntry={true} />
+            <TextInput style={styles.input} placeholder="powtórz hasło" onChangeText={text => checkRepeatPassword(text)} secureTextEntry={true}/>
             <TouchableWithoutFeedback style={styles.registerBtn} onPress={tryToRegister}>
                 <Text style={styles.registerText}>Zarejestruj się</Text>
             </TouchableWithoutFeedback>

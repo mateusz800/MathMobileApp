@@ -10,6 +10,7 @@ import LessonScene from './scenes/Lesson';
 import LoginScene from './scenes/Login';
 import { initRealmDatabase } from './data';
 import { isAuthenticated } from './data/auth';
+import { Fragment } from 'react';
 
 
 const Stack = createStackNavigator();
@@ -19,10 +20,14 @@ const App = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                {isAuthenticated() && <Stack.Screen name='Login' component={LoginScene} options={{ headerShown: false, animationEnabled: false }} />}
-                <Stack.Screen name='Home' component={HomeScene} options={{ headerShown: false, animationEnabled: false }} />
-                <Stack.Screen name='Course details' component={CourseDetailsScene} options={{ headerShown: false, animationEnabled: false }} />
-                <Stack.Screen name='Lesson' component={LessonScene} options={{ headerShown: false, animationEnabled: false }} />
+                {!isAuthenticated() && <Stack.Screen name='Login' component={LoginScene} options={{ headerShown: false, animationEnabled: false }} />}
+                {isAuthenticated &&
+                    <Fragment>
+                        <Stack.Screen name='Home' component={HomeScene} options={{ headerShown: false, animationEnabled: false }} />
+                        <Stack.Screen name='Course details' component={CourseDetailsScene} options={{ headerShown: false, animationEnabled: false }} />
+                        <Stack.Screen name='Lesson' component={LessonScene} options={{ headerShown: false, animationEnabled: false }} />
+                    </Fragment>
+                }
             </Stack.Navigator>
 
         </NavigationContainer>
