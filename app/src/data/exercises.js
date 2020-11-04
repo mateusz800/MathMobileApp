@@ -6,14 +6,14 @@ import { ExerciseSchema, AnswerSchema, CourseSchema } from './schemas';
 import { getJWT, authenticate, getCredentails } from './auth';
 
 
-export const getOfflineCourseExercises = (courseName, amount) => {
-    return realm.objects('Exercise').filtered(`course.name = '${courseName}' && solved=false`).slice(0, amount)[0];
+export const getOfflineCourseExercises = (courseName, amount, solved) => {
+    return realm.objects('Exercise').filtered(`course.name = '${courseName}' && solved=${solved}`).slice(0, amount)[0];
 }
 
-export const getCourseExercises = (setState, courseName, amount) => {
-
+export const getCourseExercises = (setState, courseName, amount, solved) => {
+    console.log("solved: " + solved);
     return axios({
-        url: `${config.API_URL}/exercises?course=${courseName}&pageSize=${amount}&isSolved=false`,
+        url: `${config.API_URL}/exercises?course=${courseName}&pageSize=${amount}&isSolved=${solved}`,
         headers: {
             Authorization: `Bearer ${getJWT()}`
         }
@@ -31,12 +31,12 @@ export const getCourseExercises = (setState, courseName, amount) => {
         setState(exercises);
     })
         .catch(error => {
-            if (error.response.status == 401) {
+            if (error.response && error.response.status == 401) {
                 authenticate(getCredentails());
-                getCourseExercises = (setState, courseName, amount);
+                getCourseExercises = (setState, courseName, amount, solved);
             }
             else {
-                setState(getOfflineCourseExercises(courseName, amount));
+                setState(getOfflineCourseExercises(courseName, amount, solved));
             }
         });
 };

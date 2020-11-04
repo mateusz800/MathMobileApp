@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
-import { element } from 'prop-types';
+import { View } from 'react-native';
 import RadioButton from './RadioInput';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
@@ -19,7 +17,7 @@ const CheckboxForm = ({ checkbox_props, radio, onSelect }) => {
     return (
         <View>
             {checkbox_props.map(property => (
-                <TouchableWithoutFeedback style={{ display: 'flex', flexDirection: 'row' }} onPress={() => select(property.value)}>
+                <TouchableWithoutFeedback key={property.value} style={{ display: 'flex', flexDirection: 'row' }} onPress={() => select(property.value)}>
                     <RadioButton active={selectedAnswer == property.value} onPress={() => select(property.value)} />
                     {property.label}
                 </TouchableWithoutFeedback>

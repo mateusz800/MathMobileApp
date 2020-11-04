@@ -21,7 +21,7 @@ export const getCourses = (setState) => {
             setState(response.data.content);
         })
         .catch(error => {
-            if (error.response.status == 401) {
+            if (error.response && error.response.status == 401) {
                 authenticate(getCredentails());
                 getCourses(setState);
             }

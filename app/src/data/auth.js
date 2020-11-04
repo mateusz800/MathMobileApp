@@ -40,16 +40,21 @@ export const register = (email, password) => {
     });
 };
 
-export const logout = () => {
+export const logout =  () => {
     let auth = getAuthObject();
     realm.write(() => {
         auth.authenticated = false;
         auth.jwt = "";
     });
+   
 };
 
 export const getJWT = () => {
-    return getAuthObject().jwt;
+    const auth = getAuthObject();
+    if(auth){
+        return auth.jwt;
+    }
+    return null;
 };
 
 export const isAuthenticated = () => {
