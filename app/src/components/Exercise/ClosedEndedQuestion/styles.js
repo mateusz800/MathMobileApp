@@ -14,7 +14,11 @@ const styles = StyleSheet.create({
         color:colors.DARK_GRAY,
         marginBottom:20,
         height:80,
-        backgroundColor:null
+        backgroundColor:null,
+    },
+    answer:{
+        width:'85%',
+        height:30
     },
     answers:{
         marginBottom:20

@@ -7,29 +7,32 @@ import Katex from 'react-native-katex';
 import { realm } from '../../../data';
 import { colors } from '../../../constants';
 import styles from './styles';
+import CheckboxForm from '../../CheckboxForm';
 
 
 const ClosedEndedQuestion = ({ exercise, setMarked, children, disabled }) => {
     const radioProps = exercise.answers.map(answer => {
         return {
-            label: answer,
+            label: <MathText
+                key={answer}
+                value={answer}
+                style={[styles.text, styles.answer]}
+                textSize={16}
+                textColor={colors.DARK_GRAY} />,
             value: answer
         };
     });
-    console.log(exercise.question);
-    //const test = "Przykładowe pytanie $x=\\frac{1+y}{1+2z^2}$"
-    
-    //const test = exercise.question;
+   
     return (
         <View style={styles.container}>
             {/*<Katex expression={exercise.question}/>*/}
-            <MathText 
+            <MathText
                 value={exercise.question}
                 style={styles.text}
                 textSize={18}
-                textColor={colors.DARK_GRAY}/>
-                    < View style={styles.answers}>
-                <RadioForm
+                textColor={colors.DARK_GRAY} />
+            < View style={styles.answers}>
+                {false && <RadioForm
                     key={exercise.id}
                     radio_props={radioProps}
                     initial={-1}
@@ -38,6 +41,8 @@ const ClosedEndedQuestion = ({ exercise, setMarked, children, disabled }) => {
                     selectedButtonColor={disabled ? colors.MAROON : colors.DARK_GRAY}
                     disabled={disabled}
                 />
+                }
+                <CheckboxForm checkbox_props={radioProps} onSelect={value => setMarked(value)} />
             </View>
             {children}
 
