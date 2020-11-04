@@ -12,7 +12,9 @@ const styles = StyleSheet.create({
     text:{
         fontWeight:'bold',
         color:colors.DARK_GRAY,
-        marginBottom:20
+        marginBottom:20,
+        height:80,
+        backgroundColor:null
     },
     answers:{
         marginBottom:20

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 
 import NavigationBar, { barType } from '../../components/NavigationBar';
 import Exercise from '../../components/Exercise';
@@ -27,11 +27,15 @@ const Lesson = ({ route, navigation }) => {
             navigation.pop()
         }
     };
+    console.log(exercises);
     return (
         <View>
             <NavigationBar type={barType.LESSON} progress={exerciseIndex} maxProgress={exercises ? exercises.length : 0} navigation={navigation} />
             {exercises && exercises.length > 0 &&
                 <Exercise exercise={exercises[exerciseIndex]} nextFunc={nextExercise} last={exerciseIndex + 1 == exercises.length ? true : false} />}
+            {exercises && exercises.length == 0 && 
+            /* TODO: Create page, add abbilty to repeat already solved ones */
+            <Text>Brak nowych zadań</Text>}
 
         </View>
     )

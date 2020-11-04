@@ -3,7 +3,7 @@ import axios from 'axios';
 import { realm } from './index';
 import { config } from '../constants'
 import { ExerciseSchema, AnswerSchema, CourseSchema } from './schemas';
-import { getJWT } from './auth';
+import { getJWT, authenticate, getCredentails } from './auth';
 
 
 export const getOfflineCourseExercises = (courseName, amount) => {
@@ -13,12 +13,13 @@ export const getOfflineCourseExercises = (courseName, amount) => {
 export const getCourseExercises = (setState, courseName, amount) => {
 
     return axios({
-        url: `${config.API_URL}/exercises?course=${courseName}&pageSize=${amount}`,
+        url: `${config.API_URL}/exercises?course=${courseName}&pageSize=${amount}&isSolved=false`,
         headers: {
             Authorization: `Bearer ${getJWT()}`
         }
     }).then(response => {
         const exercises = response.data.content.map(exercise => {
+            console.log(exercise);
             return {
                 id: exercise.id,
                 course: exercise.course,
@@ -44,8 +45,28 @@ export const getCourseExercises = (setState, courseName, amount) => {
 
 
 export const saveAnswer = (exerciseId, solved) => {
+    console.log("SAVING ANSWER");
+    axios({
+        method:'POST',
+        url:`${config.API_URL}/exercise/${exerciseId}/answer`,
+        headers:{
+            Authorization:`Bearer ${getJWT()}`,
+        },
+        data:{
+            "isCorrect":solved
+        }
+    }).then(response => {
+        console.log("Saving answer in API");
+    }).catch(error => {
+        console.log("Wystapil error");
+        console.log(error);
+        saveAnswerOnline(exerciseId, solved);
+    })
+    
+};
 
-    Realm.open({ schema: [AnswerSchema, ExerciseSchema, CourseSchema] }).then(realm => {
+const saveAnswerOnline = (exerciseId, solved) => {
+    Realm.open({ schema: [AnswerSchema] }).then(realm => {
         realm.write(() => {
             let answerObj;
             try {
@@ -70,7 +91,7 @@ export const saveAnswer = (exerciseId, solved) => {
             }
         });
     });
-};
+}
 
 export const clearAllAnswers = () => {
     Realm.open({ schema: [AnswerSchema, ExerciseSchema, courseSchema] }).then(realm => {

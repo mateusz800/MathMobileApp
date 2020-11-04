@@ -20,7 +20,7 @@ const App = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                {!isAuthenticated() && <Stack.Screen name='Login' component={LoginScene} options={{ headerShown: false, animationEnabled: false }} />}
+                 <Stack.Screen name='Login' component={LoginScene} options={{ headerShown: false, animationEnabled: false }} />
                 {isAuthenticated &&
                     <Fragment>
                         <Stack.Screen name='Home' component={HomeScene} options={{ headerShown: false, animationEnabled: false }} />

@@ -6,6 +6,7 @@ import LoginForm from '../../components/forms/LoginForm';
 import RegisterForm from '../../components/forms/RegisterForm';
 import logo from '../../assets/images/logo.png';
 import styles from './styles';
+import { isAuthenticated } from '../../data/auth';
 
 const Type = {
     LOGIN: 1,
@@ -17,6 +18,9 @@ const LoginScene = ({ route, navigation }) => {
     const [type, setType] = useState(Type.LOGIN)
     const navigateToHome = () => {
         navigation.navigate('Home');
+    }
+    if(isAuthenticated()){
+        navigateToHome();
     }
 
     return (
