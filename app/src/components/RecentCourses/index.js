@@ -9,14 +9,17 @@ import { getOfflineCourses, getCourses } from '../../data/courses';
 
 
 const RecentCourses = ({ navigation }) => {
-    const [courses, setCourses] = useState(getOfflineCourses);
+    const [courses, setCourses] = useState(null);
     const [loaded, setLoaded] = useState(false);
     useEffect(()=>{
-        if(!loaded){
+        if(courses==null){
             getCourses(setCourses);
             setLoaded(true);
         }
     });
+    if(courses == null || courses == undefined){
+        return null;
+    }
     let cards = courses.map(course => (
         <TouchableWithoutFeedback
             key={course.name}
@@ -26,7 +29,7 @@ const RecentCourses = ({ navigation }) => {
     ));
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Ostatnie tematy</Text>
+            <Text style={styles.title}>Kursy</Text>
             <ScrollView
                 style={styles.cards}
                 horizontal={true}

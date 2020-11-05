@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { View, Image, Text, AppState } from 'react-native';
 
@@ -15,21 +15,22 @@ const Type = {
 
 const LoginScene = ({ route, navigation }) => {
     // TODO: navigate to home if user is logged
-    const [type, setType] = useState(Type.LOGIN)
-    const navigateToHome = () => {
-        navigation.navigate('Home');
-    }
-    if(isAuthenticated()){
-        navigateToHome();
-    }
+   // const [type, setType] = useState(Type.LOGIN)
+    const type = route.params ? route.params.type:Type.LOGIN;
+    useEffect(()=> {
+        if(isAuthenticated()){
+            navigation.navigate('Home');
+        }
+    })
+    
 
     return (
         <View style={styles.container}>
             <Image source={logo} style={styles.logo} />
             <Text style={styles.appName}>Nazwa aplikacji</Text>
             <Text style={styles.appDesc}>Aplikacja do nauki matematyki</Text>
-            {type == Type.LOGIN && <LoginForm changeToRegister={()=>setType(Type.REGISTER)} navigateToHome={navigateToHome} />}
-            {type == Type.REGISTER && <RegisterForm changeToLogin={()=>setType(Type.LOGIN)} />}
+            {type == Type.LOGIN && <LoginForm navigation={navigation} registerType={Type.REGISTER}  />}
+            {type == Type.REGISTER && <RegisterForm navigation={navigation} loginType={Type.LOGIN} />}
         </View>
     );
 };

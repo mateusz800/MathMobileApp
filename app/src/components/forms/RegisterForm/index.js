@@ -6,7 +6,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { register } from '../../../data/auth'
 import styles from './styles';
 
-const RegisterForm = ({ changeToLogin, navigateToHome }) => {
+const RegisterForm = ({ navigation, loginType }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordsMatch, setPasswordMatch] = useState(true);
@@ -31,7 +31,10 @@ const RegisterForm = ({ changeToLogin, navigateToHome }) => {
         }
         // TODO: show message - registration failed
         console.log("registration failed");
-    
+    }
+
+    const goToLoginForm = () => {
+        navigation.navigate("Login", {type: loginType});
     }
 
 
@@ -45,7 +48,7 @@ const RegisterForm = ({ changeToLogin, navigateToHome }) => {
             </TouchableWithoutFeedback>
             <View style={styles.changeTypeMessage}>
                 <Text>Masz już konto?</Text>
-                <TouchableWithoutFeedback onPress={changeToLogin} >
+                <TouchableWithoutFeedback onPress={goToLoginForm} >
                     <Text style={styles.registerLink}>Zaloguj się</Text>
                 </TouchableWithoutFeedback>
             </View>

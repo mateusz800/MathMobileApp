@@ -32,7 +32,8 @@ export const getCourseExercises = (setState, courseName, amount, solved) => {
     })
         .catch(error => {
             if (error.response && error.response.status == 401) {
-                authenticate(getCredentails());
+                const credentials = getCredentails();
+                authenticate(credentials.email, credentials.password);
                 getCourseExercises = (setState, courseName, amount, solved);
             }
             else {

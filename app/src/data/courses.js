@@ -9,7 +9,6 @@ import { authenticate, getCredentails, getJWT } from './auth';
  * @param {*} setState - function that sets courses state
  */
 export const getCourses = (setState) => {
-    console.log(getJWT());
     return axios({
         method: 'GET',
         url: `${config.API_URL}/courses`,
@@ -22,7 +21,8 @@ export const getCourses = (setState) => {
         })
         .catch(error => {
             if (error.response && error.response.status == 401) {
-                authenticate(getCredentails());
+                const credentials = getCredentails();
+                authenticate(credentials.email, credentials.password);
                 getCourses(setState);
             }
             else {

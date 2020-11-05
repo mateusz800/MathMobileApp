@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { View, Button } from 'react-native';
+import React, { useState } from 'react';
+import { View, Button, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 
@@ -34,6 +34,7 @@ const Exercise = ({ exercise, last, nextFunc }) => {
             setCurrentAnswer(-1);
         }
     };
+    console.log(exercise.solutions);
     return (
         <View>
             {answered && <StatusBar message={statusMessage} />}
@@ -49,6 +50,9 @@ const Exercise = ({ exercise, last, nextFunc }) => {
                 </ClosedEndedQuestion>
             }
             {/* TODO: hidden explanation */}
+            <Text>
+                {exercise.solution}
+            </Text>
         </View>
     )
 }

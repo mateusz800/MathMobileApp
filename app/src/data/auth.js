@@ -67,7 +67,7 @@ export const isAuthenticated = () => {
 
 export const getCredentails = () => {
     const auth = getAuthObject();
-    return auth.email, auth.email;
+    return {email:auth.email, password:auth.password};
 }
 
 const getAuthObject = () => {
