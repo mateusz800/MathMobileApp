@@ -5,12 +5,12 @@ import NavigationBar, { barType } from '../../components/NavigationBar';
 import Exercise from '../../components/Exercise';
 import { getOfflineCourseExercises, getCourseExercises } from '../../data/exercises';
 import { colors, MAX_LESSON_LENGTH } from '../../constants';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const Lesson = ({ route, navigation }) => {
     const { course } = route.params;
     const [exerciseIndex, setExerciseIndex] = useState(0);
-    const [exercises, setExercises] = useState(getOfflineCourseExercises(course, MAX_LESSON_LENGTH, false));
+    const [exercises, setExercises] = useState(null);
     const [loaded, setLoaded] = useState(false);
     useEffect(() => {
         if (!loaded) {
@@ -28,9 +28,9 @@ const Lesson = ({ route, navigation }) => {
             navigation.pop()
         }
     };
-    console.log(exercises);
+    console.log
     return (
-        <View>
+        <ScrollView>
             <NavigationBar type={barType.LESSON} progress={exerciseIndex} maxProgress={exercises ? exercises.length : 0} navigation={navigation} />
             {exercises && exercises.length > 0 &&
                 <Exercise exercise={exercises[exerciseIndex]} nextFunc={nextExercise} last={exerciseIndex + 1 == exercises.length ? true : false} />}
@@ -48,7 +48,7 @@ const Lesson = ({ route, navigation }) => {
                 </View>
             }
 
-        </View>
+        </ScrollView>
     )
 };
 

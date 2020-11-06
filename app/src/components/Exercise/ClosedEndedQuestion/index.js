@@ -8,6 +8,7 @@ import { realm } from '../../../data';
 import { colors } from '../../../constants';
 import styles from './styles';
 import CheckboxForm from '../../CheckboxForm';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const ClosedEndedQuestion = ({ exercise, setMarked, children, disabled }) => {
@@ -24,7 +25,7 @@ const ClosedEndedQuestion = ({ exercise, setMarked, children, disabled }) => {
     });
    
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             {/*<Katex expression={exercise.question}/>*/}
             <MathText
                 value={exercise.question}
@@ -46,7 +47,7 @@ const ClosedEndedQuestion = ({ exercise, setMarked, children, disabled }) => {
             </View>
             {children}
 
-        </View>
+        </ScrollView>
     );
 };
 

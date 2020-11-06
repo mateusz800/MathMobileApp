@@ -10,7 +10,7 @@ export const getOfflineCourseExercises = (courseName, amount, solved) => {
     return realm.objects('Exercise').filtered(`course.name = '${courseName}' && solved=${solved}`).slice(0, amount)[0];
 }
 
-export const getCourseExercises = (setState, courseName, amount, solved) => {
+export let getCourseExercises = (setState, courseName, amount, solved) => {
     console.log("solved: " + solved);
     return axios({
         url: `${config.API_URL}/exercises?course=${courseName}&pageSize=${amount}&isSolved=${solved}`,
@@ -19,13 +19,13 @@ export const getCourseExercises = (setState, courseName, amount, solved) => {
         }
     }).then(response => {
         const exercises = response.data.content.map(exercise => {
-            console.log(exercise);
             return {
                 id: exercise.id,
                 course: exercise.course,
                 question: exercise.question,
                 correctAnswer: exercise.correctAnswers[0],
-                answers: exercise.otherAnswers.concat(exercise.correctAnswers[0])
+                solution: exercise.solution,
+                answers: exercise.otherAnswers.concat(exercise.correctAnswers[0]),
             }
         });
         setState(exercises);

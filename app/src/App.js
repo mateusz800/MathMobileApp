@@ -20,14 +20,15 @@ const App = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-               <Stack.Screen name='Login' component={LoginScene} options={{ headerShown: false, animationEnabled: false }} />
-                {isAuthenticated &&
+             
+                {isAuthenticated() &&
                     <Fragment>
                         <Stack.Screen name='Home' component={HomeScene} options={{ headerShown: false, animationEnabled: false }} />
                         <Stack.Screen name='Course details' component={CourseDetailsScene} options={{ headerShown: false, animationEnabled: false }} />
                         <Stack.Screen name='Lesson' component={LessonScene} options={{ headerShown: false, animationEnabled: false }} />
                     </Fragment>
                 }
+                 <Stack.Screen name='Login' component={LoginScene} options={{ headerShown: false, animationEnabled: false }} />
             </Stack.Navigator>
 
         </NavigationContainer>

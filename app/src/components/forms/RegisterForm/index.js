@@ -26,7 +26,7 @@ const RegisterForm = ({ navigation, loginType }) => {
         }
         const result = await register(email, password);
         if(result == true){
-            changeToLogin();
+            navigation.navigate("Login", {type:loginType})
             return;
         }
         // TODO: show message - registration failed

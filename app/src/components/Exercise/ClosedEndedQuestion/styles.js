@@ -7,7 +7,8 @@ const styles = StyleSheet.create({
         padding:15,
         height:'90%',
         display:'flex',
-        justifyContent:'space-evenly'
+        paddingTop:100
+        //justifyContent:'space-evenly'
     },
     text:{
         fontWeight:'bold',
