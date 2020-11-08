@@ -37,7 +37,7 @@ const Exercise = ({ exercise, last, nextFunc }) => {
             }
             setCurrentAnswer(-1);
         }
-    };
+}
     const showExerciseSolution = () => {
         setAnswered(true);
         setShowSolution(true);
@@ -45,7 +45,6 @@ const Exercise = ({ exercise, last, nextFunc }) => {
         // TODO: doen't work
         scroller.current.scrollTo({x:100, y:100, animated:true});
     };
-    console.log(exercise.solution);
     return (
         <ScrollView ref={scroller}>
             {answered && <StatusBar message={statusMessage} />}

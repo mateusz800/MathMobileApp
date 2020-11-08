@@ -35,7 +35,6 @@ export const register = (email, password) => {
     }).then(response => {
         return true;
     }).catch(error => {
-        console.log(error);
         return false;
     });
 };

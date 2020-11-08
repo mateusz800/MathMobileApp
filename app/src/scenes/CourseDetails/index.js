@@ -32,7 +32,7 @@ const CourseDetails = ({ route, navigation }) => {
                 <Text>{course.desc}</Text>
             </View>
             <View style={styles.learnBtnContainer}>
-                <TouchableWithoutFeedback style={styles.learnBtn} onPress={() => navigation.navigate('Lesson', { course: course.name })}>
+                <TouchableWithoutFeedback style={styles.learnBtn} onPress={() => navigation.navigate('Lesson', { course: course.id })}>
                     <Text style={styles.learnBtnText}>Ucz się</Text>
                 </TouchableWithoutFeedback>
             </View>

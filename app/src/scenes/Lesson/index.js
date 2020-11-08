@@ -4,6 +4,7 @@ import { View, Text } from 'react-native';
 import NavigationBar, { barType } from '../../components/NavigationBar';
 import Exercise from '../../components/Exercise';
 import { getOfflineCourseExercises, getCourseExercises } from '../../data/exercises';
+import { updateCourseLastAccessDate } from '../../data/courses';
 import { colors, MAX_LESSON_LENGTH } from '../../constants';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
@@ -16,19 +17,18 @@ const Lesson = ({ route, navigation }) => {
         if (!loaded) {
             getCourseExercises(setExercises, course, MAX_LESSON_LENGTH, false);
             setLoaded(true);
+            updateCourseLastAccessDate(course);
         }
     });
-
     const nextExercise = () => {
         if (exerciseIndex + 1 < exercises.length) {
             setExerciseIndex(exerciseIndex + 1);
         }
         else {
             // TODO: end of lesson - show summary
-            navigation.pop()
+            navigation.pop();
         }
     };
-    console.log
     return (
         <ScrollView>
             <NavigationBar type={barType.LESSON} progress={exerciseIndex} maxProgress={exercises ? exercises.length : 0} navigation={navigation} />
@@ -42,7 +42,7 @@ const Lesson = ({ route, navigation }) => {
                         Możesz jednak powtarzać zadania wcześniej już rozwiązane. Kliknij w poniższy przycisk, aby zacząć.
                     </Text>
                     <TouchableWithoutFeedback style={{ backgroundColor: colors.MAROON, width: 150, padding: 10, marginTop: 20 }}
-                    onPress={()=>getCourseExercises(setExercises, course, MAX_LESSON_LENGTH, true)}>
+                        onPress={() => getCourseExercises(setExercises, course, MAX_LESSON_LENGTH, true)}>
                         <Text style={{ color: 'white', textAlign: 'center' }}>Powtarzaj</Text>
                     </TouchableWithoutFeedback>
                 </View>

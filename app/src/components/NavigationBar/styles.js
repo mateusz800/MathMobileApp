@@ -6,11 +6,11 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         height: 50,
-        backgroundColor: colors.LIGHT_GRAY,
+        backgroundColor: 'white',
         display:'flex',
         flexDirection:'row',
         alignItems:'center',
-        elevation:5
+        elevation:0
     },
     content: {
         display:'flex',

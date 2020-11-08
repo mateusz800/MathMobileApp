@@ -7,6 +7,11 @@ export const colors = {
     MAROON:'#8B2311'
 };
 
+export const colorsRGB = {
+    DARK_GRAY: [86,86,86],
+    MAROON: [139,35,17]
+}
+
 export const MAX_LESSON_LENGTH = 5
 
 export const config = {

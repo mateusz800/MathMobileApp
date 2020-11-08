@@ -7,7 +7,6 @@ const CheckboxForm = ({ checkbox_props, radio, onSelect }) => {
     const [selectedAnswer, selectAnswer] = useState(null);
     const values = checkbox_props.map(element => element.value);
     const labels = checkbox_props.map(element => element.label);
-    console.log(labels);
 
     const select = (value) => {
         selectAnswer(value);

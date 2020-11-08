@@ -18,6 +18,7 @@ export const initRealmDatabase = () => {
 
             // courses
             let algebracourse = realm.create('Course', {
+                id:1,
                 name: 'algebra',
                 desc: 'Zapoznaj się z algebrą',
                 image: 'functions',

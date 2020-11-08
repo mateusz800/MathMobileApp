@@ -2,22 +2,22 @@ import axios from 'axios';
 
 import { realm } from './index';
 import { config } from '../constants'
-import { ExerciseSchema, AnswerSchema, CourseSchema } from './schemas';
+import { ExerciseSchema, AnswerSchema, CourseSchema, StartedCoursesSchema } from './schemas';
 import { getJWT, authenticate, getCredentails } from './auth';
 
 
-export const getOfflineCourseExercises = (courseName, amount, solved) => {
-    return realm.objects('Exercise').filtered(`course.name = '${courseName}' && solved=${solved}`).slice(0, amount)[0];
+export const getOfflineCourseExercises = (courseId, amount, solved) => {
+    return realm.objects('Exercise').filtered(`course.id = '${courseId}' && solved=${solved}`).slice(0, amount)[0];
 }
 
-export let getCourseExercises = (setState, courseName, amount, solved) => {
-    console.log("solved: " + solved);
+export let getCourseExercises = (setState, courseId, amount, solved) => {
     return axios({
-        url: `${config.API_URL}/exercises?course=${courseName}&pageSize=${amount}&isSolved=${solved}`,
+        url: `${config.API_URL}/exercises?courseId=${courseId}&pageSize=${amount}&isSolved=${solved}`,
         headers: {
             Authorization: `Bearer ${getJWT()}`
         }
     }).then(response => {
+    
         const exercises = response.data.content.map(exercise => {
             return {
                 id: exercise.id,
@@ -34,10 +34,10 @@ export let getCourseExercises = (setState, courseName, amount, solved) => {
             if (error.response && error.response.status == 401) {
                 const credentials = getCredentails();
                 authenticate(credentials.email, credentials.password);
-                getCourseExercises = (setState, courseName, amount, solved);
+                getCourseExercises = (setState, courseId, amount, solved);
             }
             else {
-                setState(getOfflineCourseExercises(courseName, amount, solved));
+                setState(getOfflineCourseExercises(courseId, amount, solved));
             }
         });
 };
@@ -45,25 +45,24 @@ export let getCourseExercises = (setState, courseName, amount, solved) => {
 
 
 
+
 export const saveAnswer = (exerciseId, solved) => {
-    console.log("SAVING ANSWER");
     axios({
-        method:'POST',
-        url:`${config.API_URL}/exercise/${exerciseId}/answer`,
-        headers:{
-            Authorization:`Bearer ${getJWT()}`,
+        method: 'POST',
+        url: `${config.API_URL}/exercise/${exerciseId}/answer`,
+        headers: {
+            Authorization: `Bearer ${getJWT()}`,
         },
-        data:{
-            "isCorrect":solved
+        data: {
+            "isCorrect": solved
         }
     }).then(response => {
         console.log("Saving answer in API");
     }).catch(error => {
-        console.log("Wystapil error");
         console.log(error);
         saveAnswerOnline(exerciseId, solved);
     })
-    
+
 };
 
 const saveAnswerOnline = (exerciseId, solved) => {

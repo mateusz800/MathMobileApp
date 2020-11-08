@@ -13,8 +13,9 @@ export const AuthSchema = {
 
 export const CourseSchema = {
     name: 'Course',
-    primaryKey: 'name',
+    primaryKey: 'id',
     properties: {
+        id:'int',
         name: 'string',
         desc: 'string',
         image: 'string',
@@ -33,7 +34,7 @@ export const ExerciseSchema = {
         solved: { type: 'bool', default: false }
 
     }
-}
+};
 
 export const AnswerSchema = {
     name: 'Answer',
@@ -44,4 +45,13 @@ export const AnswerSchema = {
         answer_date: 'int',
         incorrect_answer_count: { type: 'int', default: 0 }
     }
-}
+};
+
+export const StartedCoursesSchema = {
+    name:'StartedCourses',
+    primaryKey: 'course_id',
+    properties: {
+        course_id: 'int',
+        date_last_learning: 'date'
+    }
+};
