@@ -7,25 +7,28 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 50,
         backgroundColor: 'white',
-        display:'flex',
-        flexDirection:'row',
-        alignItems:'center',
-        elevation:0
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+
     },
     content: {
-        display:'flex',
-        width: Dimensions.get('window').width - 70,
-        justifyContent:'center',
-        alignItems:'center',
-        paddingLeft:20,
-        paddingRight:10
+        display: 'flex',
+        flexDirection: 'row',
+        width: Dimensions.get('window').width - 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingLeft: 20,
+        paddingRight: 10
     },
     leftButton: {
         paddingLeft: 10
-    },  
-    title: {
-     
+    },
+    right: {
+        position:'absolute',
+        right:-20,
     }
+
 });
 
 export default styles;

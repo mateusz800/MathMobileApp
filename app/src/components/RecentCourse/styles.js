@@ -8,8 +8,10 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         fontWeight: 'bold',
-        fontSize: 20,
+        fontSize: 16,
         color: colors.DARK_GRAY,
+        position:'relative',
+        top:10
     },
     line: {
         width: '90%',

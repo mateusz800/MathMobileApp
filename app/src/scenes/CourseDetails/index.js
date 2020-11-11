@@ -7,13 +7,14 @@ import NavigationBar, { barType } from '../../components/NavigationBar';
 import images from '../../constants/images';
 import { colors } from '../../constants';
 import styles from './styles';
+import withOptionsMenu from '../withOptionsMenu';
 
 
-const CourseDetails = ({ route, navigation }) => {
+const CourseDetails = ({ route, navigation, toggleOptionsMenu }) => {
     const { course } = route.params;
     return (
         <ScrollView>
-            <NavigationBar type={barType.DETAILS} title={course.name} navigation={navigation} />
+            <NavigationBar type={barType.DETAILS} title={course.name} navigation={navigation} toggleOptionsMenu={toggleOptionsMenu} />
             <LinearGradient
                 colors={['rgba(255,255,255,0)', colors.MAROON]}
                 start={{ x: 0.5, y: -1.5 }}
@@ -40,4 +41,9 @@ const CourseDetails = ({ route, navigation }) => {
     );
 };
 
-export default CourseDetails;
+const options = [{
+    text: "Zapisz w pamięci urządzenia",
+    "function": () => alert('Kurs został zapisany w pamięci urządzenia. Możesz teraz z niego korzystać, gdy jesteś offline.')
+}];
+
+export default withOptionsMenu(options, CourseDetails)
