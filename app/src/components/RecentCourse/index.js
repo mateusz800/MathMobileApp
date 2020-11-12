@@ -10,14 +10,12 @@ import { colors } from '../../constants'
 import styles from './styles';
 import { useRef } from 'react';
 
-const RecentCourse = ({ goToLesson, navigation }) => {
+const RecentCourse = ({ goToLesson, navigation, }) => {
     const [course, setCourse] = useState(null);
-    const prevNavigation = useRef();
     useEffect(() => {
-        if (prevNavigation != navigation) {
+        navigation.addListener('focus', () => {
             getLastAccessedCourse(setCourse);
-            prevNavigation.current = navigation;
-        }
+        });
     });
 
     function startLesson() {
@@ -55,8 +53,6 @@ const RecentCourse = ({ goToLesson, navigation }) => {
                     <View style={styles.gradientTriangle} />
                 </View>
                 <View style={styles.section}>
-
-
                 </View>
             </View>
         )
