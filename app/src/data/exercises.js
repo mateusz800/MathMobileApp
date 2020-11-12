@@ -1,13 +1,36 @@
 import axios from 'axios';
 
-import { realm } from './index';
 import { config } from '../constants'
 import { ExerciseSchema, AnswerSchema, CourseSchema, StartedCoursesSchema } from './schemas';
 import { getJWT, authenticate, getCredentails } from './auth';
+import { getCourseByIdFromApi } from './courses';
 
+const realm = new Realm({ schema: [ExerciseSchema, CourseSchema] });
 
 export const getOfflineCourseExercises = (courseId, amount, solved) => {
-    return realm.objects('Exercise').filtered(`course.id = '${courseId}' && solved=${solved}`).slice(0, amount)[0];
+    return realm.objects('Exercise').filtered(`course.id = '${courseId}' && solved=${solved}`).slice(0, amount);
+}
+
+const getAllCourseExercisesFromApi = (courseId) => {
+    // TODO: check all pages
+    console.log(courseId);
+    return axios({
+        url: `${config.API_URL}/exercises?courseId=${courseId}`,
+        headers: {
+            Authorization: `Bearer ${getJWT()}`
+        }
+    }).then(response => {
+        return response.data.content.map(exercise => {
+            return {
+                id: exercise.id,
+                course: exercise.course,
+                question: exercise.question,
+                correctAnswer: exercise.correctAnswers[0],
+                solution: exercise.solution,
+                answers: exercise.otherAnswers.concat(exercise.correctAnswers[0]),
+            }
+        });
+    }).catch(error => console.log(error));
 }
 
 export let getCourseExercises = (setState, courseId, amount, solved) => {
@@ -17,7 +40,7 @@ export let getCourseExercises = (setState, courseId, amount, solved) => {
             Authorization: `Bearer ${getJWT()}`
         }
     }).then(response => {
-    
+
         const exercises = response.data.content.map(exercise => {
             return {
                 id: exercise.id,
@@ -37,6 +60,7 @@ export let getCourseExercises = (setState, courseId, amount, solved) => {
                 getCourseExercises = (setState, courseId, amount, solved);
             }
             else {
+                console.log("get oofline exercises");
                 setState(getOfflineCourseExercises(courseId, amount, solved));
             }
         });
@@ -91,7 +115,7 @@ const saveAnswerOnline = (exerciseId, solved) => {
             }
         });
     });
-}
+};
 
 export const clearAllAnswers = () => {
     Realm.open({ schema: [AnswerSchema, ExerciseSchema, courseSchema] }).then(realm => {
@@ -104,4 +128,24 @@ export const clearAllAnswers = () => {
             realm.objects('Exercise').map(obj => { obj.solved = false; });
         })
     });
+};
+
+export const saveCourseExercisesInDevice = async (course) => {
+    // TODO: check all pages
+    const exercises = await getAllCourseExercisesFromApi(course.id);
+    
+    realm.write(() => {
+        exercises.map(e => {
+            realm.create('Exercise', {
+                id:e.id,
+                course:realm.objectForPrimaryKey('Course', course.id),
+                question:e.question,
+                correctAnswer:e.correctAnswer,
+                answers:e.answers,
+                solved:e.solved
+            });
+        });
+    });
+    
 }
+

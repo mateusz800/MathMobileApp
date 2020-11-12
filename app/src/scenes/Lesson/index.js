@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 import NavigationBar, { barType } from '../../components/NavigationBar';
 import Exercise from '../../components/Exercise';
-import { getOfflineCourseExercises, getCourseExercises } from '../../data/exercises';
+import { getOfflineCourseExercises, getCourseExercises, test } from '../../data/exercises';
 import { updateCourseLastAccessDate } from '../../data/courses';
 import { colors, MAX_LESSON_LENGTH } from '../../constants';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -13,6 +13,7 @@ const Lesson = ({ route, navigation }) => {
     const [exerciseIndex, setExerciseIndex] = useState(0);
     const [exercises, setExercises] = useState(null);
     const [loaded, setLoaded] = useState(false);
+    console.log(exercises);
     useEffect(() => {
         if (!loaded) {
             getCourseExercises(setExercises, course, MAX_LESSON_LENGTH, false);

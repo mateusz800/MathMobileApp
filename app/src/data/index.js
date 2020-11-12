@@ -15,7 +15,7 @@ export const initRealmDatabase = () => {
                 password: "",
                 jwt:""
             });
-
+            /*
             // courses
             let algebracourse = realm.create('Course', {
                 id:1,
@@ -68,7 +68,7 @@ export const initRealmDatabase = () => {
                 answers: ['Jakaś odpowiedź 1', 'Jakaś odpowiedź 2', 'Jakaś odpowiedź 3', 'Jakaś odpowiedź 4'],
                 course:algebracourse
             });
-
+*/
             
             
         });

@@ -8,10 +8,17 @@ import images from '../../constants/images';
 import { colors } from '../../constants';
 import styles from './styles';
 import withOptionsMenu from '../withOptionsMenu';
+import { saveCourseInDevice } from '../../data/courses';
+
+const options = [{
+    text: "Zapisz w pamięci urządzenia",
+    "function": null
+}];
 
 
 const CourseDetails = ({ route, navigation, toggleOptionsMenu }) => {
     const { course } = route.params;
+    options[0].function = async () => saveCourseInDevice(course).then(()=>alert("Kurs został zapisany w pamięci urządzenia. Teraz możesz z niego korzystać nawet, gdy jesteś offline."));
     return (
         <ScrollView>
             <NavigationBar type={barType.DETAILS} title={course.name} navigation={navigation} toggleOptionsMenu={toggleOptionsMenu} />
@@ -41,9 +48,5 @@ const CourseDetails = ({ route, navigation, toggleOptionsMenu }) => {
     );
 };
 
-const options = [{
-    text: "Zapisz w pamięci urządzenia",
-    "function": () => alert('Kurs został zapisany w pamięci urządzenia. Możesz teraz z niego korzystać, gdy jesteś offline.')
-}];
 
 export default withOptionsMenu(options, CourseDetails)

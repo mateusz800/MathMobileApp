@@ -3,6 +3,7 @@ import Realm from 'realm';
 
 import { config } from '../constants'
 import { authenticate, getCredentails, getJWT } from './auth';
+import { saveCourseExercisesInDevice } from './exercises';
 import { CourseSchema, StartedCoursesSchema } from './schemas';
 
 
@@ -62,13 +63,7 @@ export const updateCourseLastAccessDate = (courseId) => {
 };
 
 const getCourseById = async (id, setState) => {
-    return axios({
-        method: 'GET',
-        url: `${config.API_URL}/courses/${id}`,
-        headers: {
-            Authorization: `Bearer ${getJWT()}`
-        }
-    }).then(response => {
+    getCourseByIdFromApi(id).then(response => {
         setState(response.data);
     }).catch(error => {
         if (error.response && error.response.status == 401) {
@@ -77,11 +72,22 @@ const getCourseById = async (id, setState) => {
             getCourseById(id);
         }
         else {
-            if(setState){
+            if (setState) {
                 setState(getOfflineCourseById(id));
             }
-           
         }
+    });
+}
+
+const getCourseByIdFromApi = (id) => {
+    return axios({
+        method: 'GET',
+        url: `${config.API_URL}/courses/${id}`,
+        headers: {
+            Authorization: `Bearer ${getJWT()}`
+        }
+    }).then(response => {
+        return response.data;
     });
 }
 
@@ -89,10 +95,74 @@ const getOfflineCourseById = (id) => {
     return realm.objectForPrimaryKey('Course', id);
 }
 
-export const getLastAccessedCourse =  (setCourse) => {
+export const getLastAccessedCourse = (setCourse) => {
     Realm.open({ schema: [StartedCoursesSchema, CourseSchema] }).then(realm => {
-        const courseId = realm.objects('StartedCourses').sorted('date_last_learning', true)[0].course_id;
-        getCourseById(courseId, setCourse);
+        const courses = realm.objects('StartedCourses').sorted('date_last_learning', true);
+        if (courses.length > 0) {
+            const courseId = courses[0].course_id;
+            getCourseById(courseId, setCourse);
+        }
     });
 }
+
+export const saveCourseInDevice = async (courseObj) => {
+    // TODO: save and get saved exercises in device
+    // TODO: save course image in device
+    console.log("beggining");
+    console.log(courseObj);
+    let course = realm.objectForPrimaryKey('Course', courseObj.id);
+    if (course) {
+        // object already exists - update
+        realm.write(() => {
+            course.name = courseObj.name;
+            course.desc = courseObj.desc;
+            course.image = courseObj.image;
+        })
+    } else{
+        realm.write(() => {
+            course = realm.create('Course', {
+                id: courseObj.id,
+                name: courseObj.name,
+                desc: courseObj.desc,
+                image: courseObj.image, 
+            });
+        });
+    }
+
+    console.log();
+    saveCourseExercisesInDevice(course);
+    console.log(course);
+
+
+
+
+
+
+
+    /*
+        let course;
+        realm.write(() => {
+            try {
+                console.log("id : " + courseObj.id);
+                console.log(realm.objects('Course').find(c => c.id = courseObj.id));
+                
+                
+            }
+            catch (error) {
+                // create
+                console.log(error);
+                course = realm.create('Course', {
+                    id: courseObj.id,
+                    name: courseObj.name,
+                    desc: courseObj.desc,
+                    image: courseObj.image, // TODO
+                });
+            }
+            saveCourseExercisesInDevice(course);
+            
+        });
+        */
+}
+
+
 
