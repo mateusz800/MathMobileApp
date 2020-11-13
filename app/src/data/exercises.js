@@ -13,7 +13,6 @@ export const getOfflineCourseExercises = (courseId, amount, solved) => {
 
 const getAllCourseExercisesFromApi = (courseId) => {
     // TODO: check all pages
-    console.log(courseId);
     return axios({
         url: `${config.API_URL}/exercises?courseId=${courseId}`,
         headers: {
@@ -60,7 +59,6 @@ export let getCourseExercises = (setState, courseId, amount, solved) => {
                 getCourseExercises = (setState, courseId, amount, solved);
             }
             else {
-                console.log("get oofline exercises");
                 setState(getOfflineCourseExercises(courseId, amount, solved));
             }
         });

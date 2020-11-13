@@ -63,15 +63,19 @@ export const updateCourseLastAccessDate = (courseId) => {
 };
 
 const getCourseById = async (id, setState) => {
+    console.log("ok");
     getCourseByIdFromApi(id).then(response => {
-        setState(response.data);
+        console.log("oK3");
+        console.log(response);
+        setState(response);
     }).catch(error => {
         if (error.response && error.response.status == 401) {
             const credentials = getCredentails();
             authenticate(credentials.email, credentials.password);
-            getCourseById(id);
+            getCourseById(id, setState);
         }
         else {
+            console.log(error);
             if (setState) {
                 setState(getOfflineCourseById(id));
             }
@@ -79,8 +83,8 @@ const getCourseById = async (id, setState) => {
     });
 }
 
-const getCourseByIdFromApi = (id) => {
-    return axios({
+const getCourseByIdFromApi = async (id) => {
+    return await axios({
         method: 'GET',
         url: `${config.API_URL}/courses/${id}`,
         headers: {
@@ -108,8 +112,6 @@ export const getLastAccessedCourse = (setCourse) => {
 export const saveCourseInDevice = async (courseObj) => {
     // TODO: save and get saved exercises in device
     // TODO: save course image in device
-    console.log("beggining");
-    console.log(courseObj);
     let course = realm.objectForPrimaryKey('Course', courseObj.id);
     if (course) {
         // object already exists - update
@@ -128,40 +130,7 @@ export const saveCourseInDevice = async (courseObj) => {
             });
         });
     }
-
-    console.log();
     saveCourseExercisesInDevice(course);
-    console.log(course);
-
-
-
-
-
-
-
-    /*
-        let course;
-        realm.write(() => {
-            try {
-                console.log("id : " + courseObj.id);
-                console.log(realm.objects('Course').find(c => c.id = courseObj.id));
-                
-                
-            }
-            catch (error) {
-                // create
-                console.log(error);
-                course = realm.create('Course', {
-                    id: courseObj.id,
-                    name: courseObj.name,
-                    desc: courseObj.desc,
-                    image: courseObj.image, // TODO
-                });
-            }
-            saveCourseExercisesInDevice(course);
-            
-        });
-        */
 }
 
 

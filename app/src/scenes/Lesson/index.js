@@ -13,7 +13,6 @@ const Lesson = ({ route, navigation }) => {
     const [exerciseIndex, setExerciseIndex] = useState(0);
     const [exercises, setExercises] = useState(null);
     const [loaded, setLoaded] = useState(false);
-    console.log(exercises);
     useEffect(() => {
         if (!loaded) {
             getCourseExercises(setExercises, course, MAX_LESSON_LENGTH, false);

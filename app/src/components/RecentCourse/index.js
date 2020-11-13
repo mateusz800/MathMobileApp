@@ -17,7 +17,7 @@ const RecentCourse = ({ goToLesson, navigation, }) => {
             getLastAccessedCourse(setCourse);
         });
     });
-
+console.log(course);
     function startLesson() {
         goToLesson(course.id);
     };

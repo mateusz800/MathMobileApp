@@ -17,7 +17,6 @@ const withOptionsMenu = (options, WrappedScene) => {
         }
 
         toggleMenu() {
-            console.log("toogle menu");
             this.setState({ showMenu: !this.state.showMenu });
         }
 
