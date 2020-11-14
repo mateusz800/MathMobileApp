@@ -6,45 +6,45 @@ import NetInfo from "@react-native-community/netinfo";
 
 import Card from '../Card';
 import styles from './styles'
-import { getOfflineCourses, getCourses } from '../../data/courses';
+import { getOfflineCourses,  getLastAccessedCourses } from '../../data/courses';
 
 
 const RecentCourses = ({ navigation }) => {
     const [courses, setCourses] = useState(null);
     const [offline, setOffline] = useState(false);
     const [loaded, setLoaded] = useState(false);
+
     useEffect(() => {
-        if (courses == null) {
-            getCourses(setCourses);
-            setLoaded(true);
-        }
+        navigation.addListener('focus', () => {
+            getLastAccessedCourses(setCourses);
+        });
     });
+
     NetInfo.addEventListener((state) => {
         if (!state.isConnected && !offline) {
             setCourses(getOfflineCourses);
             setOffline(true);
         }
         else if (state.isConnected && offline) {
-            getCourses(setCourses);
+            getLastAccessedCourses(setCourses);
             setOffline(false);
         }
     });
-
-    if (courses == null || courses == undefined) {
+    if (courses == null || courses == undefined || courses.length==0) {
         return null;
     }
-    let cards = courses.map(course => (
+
+    let cards = courses.slice(1).map(course => (
         <TouchableWithoutFeedback
             key={course.name}
             onPress={() => navigation.navigate('Course details', { course: course })}>
-            <Card imageUrl={course.image} size={'30%'} title={course.name} key={course.name} />
+            <Card imageUrl={course.image} size={{ width: 130, height: 120 }} title={course.name} key={course.name} />
         </TouchableWithoutFeedback>
     ));
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.title}>Kursy</Text>
-                <Text style={styles.showMore}>{'zobacz więcej'}</Text>
+                <Text style={styles.title}>Rozpoczęte kursy (offline)</Text>
             </View>
             <ScrollView
                 style={styles.cards}

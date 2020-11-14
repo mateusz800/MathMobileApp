@@ -4,15 +4,13 @@ import { colors } from '../../constants'
 
 const styles = StyleSheet.create({
     container:{
-        marginTop:20,
         //backgroundColor:colors.LIGHT_GRAY,
-        paddingBottom:20,
         //elevation:5
     },
     title:{
         margin:15,
         fontWeight:'bold',
-        fontSize:20,
+        fontSize:16,
         color:colors.DARK_GRAY
     },
     cards:{

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, Dimensions } from 'react-native';
 import { RGBA } from 'react-native-color-matrix-image-filters';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { colorsRGB } from '../../constants';
 
+import Card from '../Card';
 import { getLastAccessedCourse } from '../../data/courses';
 import { colors } from '../../constants'
 import styles from './styles';
@@ -17,44 +18,21 @@ const RecentCourse = ({ goToLesson, navigation, }) => {
             getLastAccessedCourse(setCourse);
         });
     });
-console.log(course);
     function startLesson() {
         goToLesson(course.id);
     };
 
     if (course) {
         return (
-            <View style={styles.container} >
-                <View style={{ backgroundColor: 'white', width: '100%', height: 30, position: 'absolute', right: 0 }} />
-                <View style={{ display: 'flex', flexDirection: 'row', position: 'absolute', }}>
-                    <View style={styles.sectionTitleContainer}>
-                        <Text style={styles.sectionTitle}>Kontynuuj naukę</Text>
-                    </View>
-                    <View style={styles.headerTriangle} />
+            <TouchableWithoutFeedback style={styles.container} onPress={startLesson} >
+                <View style={styles.header}>
+                    <Text style={styles.title}>Kontynuuj naukę</Text>
                 </View>
-                <View style={{ elevation: -1 }}>
-                    <LinearGradient
-                        colors={['rgba(255,255,255,0)', colors.MAROON]}
-                        start={{ x: 0.5, y: -1 }}
-                        end={{ x: 0.5, y: 0.8 }}
-                    >
-                        <View style={styles.imageContainer}>
-                            <Image source={{ uri: course.image }} style={styles.image} />
-                            <View style={{ marginTop: 75 }}>
-                                <Text style={styles.courseName}>{course.name.toUpperCase()}</Text>
-                                <TouchableWithoutFeedback style={styles.continueButton} onPress={startLesson}>
-                                    <Text style={{ color: 'white', marginRight: 20 }}>Kontynuuj</Text>
-                                    <View style={styles.triangle} />
-                                </TouchableWithoutFeedback>
-                            </View>
-                        </View>
+                <View style={styles.center}>
+                    <Card imageUrl={course.image} size={{ width: Dimensions.get('window').width -10, height: 150 }} title={course.name} />
+                </View>
 
-                    </LinearGradient>
-                    <View style={styles.gradientTriangle} />
-                </View>
-                <View style={styles.section}>
-                </View>
-            </View>
+            </TouchableWithoutFeedback>
         )
     }
     return null;

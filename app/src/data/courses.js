@@ -63,11 +63,9 @@ export const updateCourseLastAccessDate = (courseId) => {
 };
 
 const getCourseById = async (id, setState) => {
-    console.log("ok");
-    getCourseByIdFromApi(id).then(response => {
-        console.log("oK3");
-        console.log(response);
+    return getCourseByIdFromApi(id).then(response => {
         setState(response);
+        return response
     }).catch(error => {
         if (error.response && error.response.status == 401) {
             const credentials = getCredentails();
@@ -99,7 +97,7 @@ const getOfflineCourseById = (id) => {
     return realm.objectForPrimaryKey('Course', id);
 }
 
-export const getLastAccessedCourse = (setCourse) => {
+export const getLastAccessedCourse = (setCourse,) => {
     Realm.open({ schema: [StartedCoursesSchema, CourseSchema] }).then(realm => {
         const courses = realm.objects('StartedCourses').sorted('date_last_learning', true);
         if (courses.length > 0) {
@@ -108,6 +106,21 @@ export const getLastAccessedCourse = (setCourse) => {
         }
     });
 }
+
+export const getLastAccessedCourses = async (setCourses) => {
+    let array = [];
+    Realm.open({ schema: [StartedCoursesSchema, CourseSchema] }).then(realm => {
+        const courses = realm.objects('StartedCourses').sorted('date_last_learning', true);
+        courses.map(course => {
+            array.push(getOfflineCourseById(course.course_id));
+        });
+        console.log("--------------");
+        console.log(array);
+        setCourses(array);
+    });
+
+}
+
 
 export const saveCourseInDevice = async (courseObj) => {
     // TODO: save and get saved exercises in device
@@ -120,13 +133,13 @@ export const saveCourseInDevice = async (courseObj) => {
             course.desc = courseObj.desc;
             course.image = courseObj.image;
         })
-    } else{
+    } else {
         realm.write(() => {
             course = realm.create('Course', {
                 id: courseObj.id,
                 name: courseObj.name,
                 desc: courseObj.desc,
-                image: courseObj.image, 
+                image: courseObj.image,
             });
         });
     }

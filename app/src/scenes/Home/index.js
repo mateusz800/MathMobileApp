@@ -1,8 +1,9 @@
 // export { default } from '../storybook'
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { ScrollView } from 'react-native';
+import AllCourses from '../../components/AllCourses';
 
 import NavigationBar from '../../components/NavigationBar'
 import { barType } from '../../components/NavigationBar'
@@ -19,11 +20,14 @@ const Home = ({ navigation, toogleMenu }) => {
         navigation.navigate('Lesson', { course: course });
     };
     return (
-        <ScrollView>
+       <Fragment>
             <NavigationBar type={barType.DEFAULT} toogleMenu={toogleMenu} />
+            <ScrollView>
             <RecentCourse goToLesson={(course) => navigateToLesson(course)} navigation={navigation} />
             <RecentCourses navigation={navigation} />
+            <AllCourses navigation={navigation}/>
         </ScrollView>
+        </Fragment>
     );
 };
 

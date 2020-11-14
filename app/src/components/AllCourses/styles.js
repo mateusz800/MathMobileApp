@@ -1,11 +1,11 @@
-import { StyleSheet } from 'react-native';
-
-import { colors } from '../../constants'
+import {StyleSheet} from 'react-native';
+import { colors } from '../../constants';
 
 const styles = StyleSheet.create({
-    center: {
+    container:{
         display:'flex',
-        alignItems:'center'
+        flexDirection:'row',
+        flexWrap:'wrap'
     },
     title:{
         margin:15,
