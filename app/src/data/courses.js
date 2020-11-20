@@ -85,7 +85,7 @@ const getCourseById = async (id, setState) => {
         else {
             console.log(error);
             if (setState) {
-                setState(getOfflineCourseById(id));
+                getOfflineCourseById(id, setState);
             }
         }
     });
@@ -106,9 +106,9 @@ const getCourseByIdFromApi = (id) => {
 
 }
 
-const getOfflineCourseById = (id) => {
+const getOfflineCourseById = (id, setState) => {
     Realm.open({ schema: [CourseSchema] }).then(realm => {
-        return realm.objectForPrimaryKey('Course', id);
+        setState(realm.objectForPrimaryKey('Course', id));
     });
 }
 
