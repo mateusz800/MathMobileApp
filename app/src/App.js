@@ -17,6 +17,7 @@ const Stack = createStackNavigator();
 
 const App = () => {
     initRealmDatabase();
+    console.log("app scene");
     return (
         <NavigationContainer>
             <Stack.Navigator>

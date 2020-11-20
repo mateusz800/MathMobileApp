@@ -15,6 +15,7 @@ const RecentCourse = ({ goToLesson, navigation, }) => {
     const [course, setCourse] = useState(null);
     useEffect(() => {
         navigation.addListener('focus', () => {
+            console.log("refresh");
             getLastAccessedCourse(setCourse);
         });
     });

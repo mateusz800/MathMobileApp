@@ -19,16 +19,18 @@ const Card = ({ imageUrl, size, title, text }) => {
     }
     useEffect(() => {
         calculateImageSize();
-    });
+    },[]);
     const calculateImageSize = () => {
-        Image.getSize(imageUrl, (width, height) => {
-            const ratio = height / width;
-            const s = { height: '50%', width: ratio * 0.5 * size.height  }
-            setImageSize(s);
-        }, (error)=>{
-            console.log(error);
-            setImageSize({width:50, height:50});
-        });
+        if (imageUrl) {
+            Image.getSize(imageUrl, (width, height) => {
+                const ratio = height / width;
+                const s = { height: '50%', width: ratio * 0.5 * size.height }
+                setImageSize(s);
+            }, (error) => {
+                console.log(error);
+                setImageSize({ width: 50, height: 50 });
+            });
+        }
 
     };
     return (
@@ -50,7 +52,7 @@ const Card = ({ imageUrl, size, title, text }) => {
 
 Card.propTypes = {
     // url to  image
-    imageUrl: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string,
     /**
      * Size of the component
      * It might be number or if value is in % - string

@@ -22,7 +22,7 @@ const RecentCourses = ({ navigation }) => {
 
     NetInfo.addEventListener((state) => {
         if (!state.isConnected && !offline) {
-            setCourses(getOfflineCourses);
+            getOfflineCourses(setCourses);
             setOffline(true);
         }
         else if (state.isConnected && offline) {
@@ -30,10 +30,10 @@ const RecentCourses = ({ navigation }) => {
             setOffline(false);
         }
     });
-    if (courses == null || courses == undefined || courses.length==0) {
+    if (courses == null || courses == undefined || courses.length<=1) {
         return null;
     }
-
+    
     let cards = courses.slice(1).map(course => (
         <TouchableWithoutFeedback
             key={course.name}
@@ -56,6 +56,7 @@ const RecentCourses = ({ navigation }) => {
 
         </View>
     );
+    
 };
 
 

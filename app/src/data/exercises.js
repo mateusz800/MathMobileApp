@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 import { config } from '../constants'
@@ -5,63 +6,70 @@ import { ExerciseSchema, AnswerSchema, CourseSchema, StartedCoursesSchema } from
 import { getJWT, authenticate, getCredentails } from './auth';
 import { getCourseByIdFromApi } from './courses';
 
-const realm = new Realm({ schema: [ExerciseSchema, CourseSchema] });
 
-export const getOfflineCourseExercises = (courseId, amount, solved) => {
-    return realm.objects('Exercise').filtered(`course.id = '${courseId}' && solved=${solved}`).slice(0, amount);
+export const getOfflineCourseExercises = (setState, courseId, amount, solved) => {
+    Realm.open({ schema: [ExerciseSchema, CourseSchema] }).then(realm => {
+        setState(realm.objects('Exercise').filtered(`course.id = '${courseId}' && solved=${solved}`).slice(0, amount));
+    });
 }
 
 const getAllCourseExercisesFromApi = (courseId) => {
     // TODO: check all pages
-    return axios({
-        url: `${config.API_URL}/exercises?courseId=${courseId}`,
-        headers: {
-            Authorization: `Bearer ${getJWT()}`
-        }
-    }).then(response => {
-        return response.data.content.map(exercise => {
-            return {
-                id: exercise.id,
-                course: exercise.course,
-                question: exercise.question,
-                correctAnswer: exercise.correctAnswers[0],
-                solution: exercise.solution,
-                answers: exercise.otherAnswers.concat(exercise.correctAnswers[0]),
+    return getJWT().then(jwt => {
+        return axios({
+            url: `${config.API_URL}/exercises?courseId=${courseId}`,
+            headers: {
+                Authorization: `Bearer ${jwt}`
             }
+        }).then(response => {
+            return response.data.content.map(exercise => {
+                return {
+                    id: exercise.id,
+                    course: exercise.course,
+                    question: exercise.question,
+                    correctAnswer: exercise.correctAnswers[0],
+                    solution: exercise.solution,
+                    answers: exercise.otherAnswers.concat(exercise.correctAnswers[0]),
+                }
+            });
         });
-    }).catch(error => console.log(error));
+    });
+
 }
 
 export let getCourseExercises = (setState, courseId, amount, solved) => {
-    return axios({
-        url: `${config.API_URL}/exercises?courseId=${courseId}&pageSize=${amount}&isSolved=${solved}`,
-        headers: {
-            Authorization: `Bearer ${getJWT()}`
-        }
-    }).then(response => {
-
-        const exercises = response.data.content.map(exercise => {
-            return {
-                id: exercise.id,
-                course: exercise.course,
-                question: exercise.question,
-                correctAnswer: exercise.correctAnswers[0],
-                solution: exercise.solution,
-                answers: exercise.otherAnswers.concat(exercise.correctAnswers[0]),
+    getJWT().then(jwt => {
+        return axios({
+            url: `${config.API_URL}/exercises?courseId=${courseId}&pageSize=${amount}&isSolved=${solved}`,
+            headers: {
+                Authorization: `Bearer ${jwt}`
             }
-        });
-        setState(exercises);
+        }).then(response => {
+            const exercises = response.data.content.map(exercise => {
+                return {
+                    id: exercise.id,
+                    course: exercise.course,
+                    question: exercise.question,
+                    correctAnswer: exercise.correctAnswers[0],
+                    solution: exercise.solution,
+                    answers: exercise.otherAnswers.concat(exercise.correctAnswers[0]),
+                }
+            });
+            setState(exercises);
+        })
+            .catch(error => {
+                if (error.response && error.response.status == 401) {
+                    getCredentails().then(credentials => {
+                        authenticate(credentials.email, credentials.password).then(() => {
+                            getCourseExercises(setState, courseId, amount, solved);
+                        })
+                    });
+                }
+                else {
+                    getOfflineCourseExercises(setState, courseId, amount, solved);
+                }
+            });
     })
-        .catch(error => {
-            if (error.response && error.response.status == 401) {
-                const credentials = getCredentails();
-                authenticate(credentials.email, credentials.password);
-                getCourseExercises = (setState, courseId, amount, solved);
-            }
-            else {
-                setState(getOfflineCourseExercises(courseId, amount, solved));
-            }
-        });
 };
 
 
@@ -130,20 +138,44 @@ export const clearAllAnswers = () => {
 
 export const saveCourseExercisesInDevice = async (course) => {
     // TODO: check all pages
-    const exercises = await getAllCourseExercisesFromApi(course.id);
-    
-    realm.write(() => {
-        exercises.map(e => {
-            realm.create('Exercise', {
-                id:e.id,
-                course:realm.objectForPrimaryKey('Course', course.id),
-                question:e.question,
-                correctAnswer:e.correctAnswer,
-                answers:e.answers,
-                solved:e.solved
+
+    Realm.open({ schema: [ExerciseSchema, CourseSchema] }).then(realm => {
+
+        getAllCourseExercisesFromApi(course.id).then(exercises => {
+            realm.write(() => {
+                console.log(exercises);
+                exercises.map(e => {
+                    let oldExercise = realm.objectForPrimaryKey('Exercise', e.id);
+                    console.log(oldExercise);
+                    if (!oldExercise) {
+                        console.log("new exercise");
+                        realm.create('Exercise', {
+                            id: e.id,
+                            course: realm.objectForPrimaryKey('Course', course.id),
+                            question: e.question,
+                            correctAnswer: e.correctAnswer,
+                            answers: e.answers,
+                            solved: e.solved
+                        });
+                    }
+                });
             });
+        }).catch(error => {
+            console.log(error);
+            if (error.response && error.response.status == 401) {
+                getCredentails().then(credentials => {
+                    authenticate(credentials.email, credentials.password).then(() => {
+                        alert(":(");
+                        saveCourseExercisesInDevice(course);
+                    })
+                });
+            }
+            else {
+                alert("jesteś offline");
+            }
         });
+
     });
-    
+
 }
 

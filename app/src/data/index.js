@@ -2,7 +2,6 @@ import Realm from 'realm';
 
 import { CourseSchema, ExerciseSchema, AnswerSchema, AuthSchema } from './schemas'
 
-export const realm = new Realm({ schema: [CourseSchema, ExerciseSchema, AnswerSchema] });
 
 export const initRealmDatabase = () => {
     Realm.open({ schema: [CourseSchema, ExerciseSchema, AuthSchema] }).then(realm => {

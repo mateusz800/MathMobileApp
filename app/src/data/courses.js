@@ -7,38 +7,44 @@ import { saveCourseExercisesInDevice } from './exercises';
 import { CourseSchema, StartedCoursesSchema } from './schemas';
 
 
-const realm = new Realm({ schema: [StartedCoursesSchema, CourseSchema] });
 
 /**
  * 
  * @param {*} setState - function that sets courses state
  */
+
 export const getCourses = (setState) => {
-    return axios({
-        method: 'GET',
-        url: `${config.API_URL}/courses`,
-        headers: {
-            Authorization: `Bearer ${getJWT()}`
-        }
-    })
-        .then(response => {
-            setState(response.data.content);
+    return getJWT().then((jwt) => {
+        return axios({
+            method: 'GET',
+            url: `${config.API_URL}/courses`,
+            headers: {
+                Authorization: `Bearer ${jwt}`
+            }
         })
-        .catch(error => {
-            if (error.response && error.response.status == 401) {
-                const credentials = getCredentails();
-                authenticate(credentials.email, credentials.password);
-                getCourses(setState);
-            }
-            else {
-                setState(getOfflineCourses());
-            }
-        });
+            .then(response => {
+                setState(response.data.content);
+            })
+            .catch(error => {
+                if (error.response && error.response.status == 401) {
+                    getCredentails().then(credentials => {
+                        authenticate(credentials.email, credentials.password).then(() => {
+                            getCourses(setState);
+                        });
+                    })
+                }
+                else {
+                    getOfflineCourses(setState);
+                }
+            });
+    });
 };
 
 
-export const getOfflineCourses = () => {
-    return realm.objects('Course');
+export const getOfflineCourses = (setState) => {
+    Realm.open({ schema: [CourseSchema] }).then(realm => {
+        setState(realm.objects('Course'));
+    });
 }
 
 
@@ -63,14 +69,18 @@ export const updateCourseLastAccessDate = (courseId) => {
 };
 
 const getCourseById = async (id, setState) => {
+
     return getCourseByIdFromApi(id).then(response => {
+        console.log("Ok");
         setState(response);
         return response
     }).catch(error => {
         if (error.response && error.response.status == 401) {
-            const credentials = getCredentails();
-            authenticate(credentials.email, credentials.password);
-            getCourseById(id, setState);
+            getCredentails().then(credentials => {
+                authenticate(credentials.email, credentials.password).then(() => {
+                    getCourseById(id, setState);
+                });
+            })
         }
         else {
             console.log(error);
@@ -81,23 +91,28 @@ const getCourseById = async (id, setState) => {
     });
 }
 
-const getCourseByIdFromApi = async (id) => {
-    return await axios({
-        method: 'GET',
-        url: `${config.API_URL}/courses/${id}`,
-        headers: {
-            Authorization: `Bearer ${getJWT()}`
-        }
-    }).then(response => {
-        return response.data;
-    });
+const getCourseByIdFromApi = (id) => {
+    return getJWT().then(jwt => {
+        return axios({
+            method: 'GET',
+            url: `${config.API_URL}/courses/${id}`,
+            headers: {
+                Authorization: `Bearer ${jwt}`
+            }
+        }).then(response => {
+            return response.data;
+        });
+    })
+
 }
 
 const getOfflineCourseById = (id) => {
-    return realm.objectForPrimaryKey('Course', id);
+    Realm.open({ schema: [CourseSchema] }).then(realm => {
+        return realm.objectForPrimaryKey('Course', id);
+    });
 }
 
-export const getLastAccessedCourse = (setCourse,) => {
+export const getLastAccessedCourse = (setCourse) => {
     Realm.open({ schema: [StartedCoursesSchema, CourseSchema] }).then(realm => {
         const courses = realm.objects('StartedCourses').sorted('date_last_learning', true);
         if (courses.length > 0) {
@@ -112,11 +127,14 @@ export const getLastAccessedCourses = async (setCourses) => {
     Realm.open({ schema: [StartedCoursesSchema, CourseSchema] }).then(realm => {
         const courses = realm.objects('StartedCourses').sorted('date_last_learning', true);
         courses.map(course => {
-            array.push(getOfflineCourseById(course.course_id));
+            const object = getOfflineCourseById(course.course_id)
+            if (object) {
+                array.push(object);
+            }
         });
-        console.log("--------------");
-        console.log(array);
-        setCourses(array);
+        if (array.length > 0) {
+            setCourses(array);
+        }
     });
 
 }
@@ -125,25 +143,28 @@ export const getLastAccessedCourses = async (setCourses) => {
 export const saveCourseInDevice = async (courseObj) => {
     // TODO: save and get saved exercises in device
     // TODO: save course image in device
-    let course = realm.objectForPrimaryKey('Course', courseObj.id);
-    if (course) {
-        // object already exists - update
-        realm.write(() => {
-            course.name = courseObj.name;
-            course.desc = courseObj.desc;
-            course.image = courseObj.image;
-        })
-    } else {
-        realm.write(() => {
-            course = realm.create('Course', {
-                id: courseObj.id,
-                name: courseObj.name,
-                desc: courseObj.desc,
-                image: courseObj.image,
+    Realm.open({ schema: [CourseSchema] }).then(realm => {
+        let course = realm.objectForPrimaryKey('Course', courseObj.id);
+        if (course) {
+            // object already exists - update
+            realm.write(() => {
+                course.name = courseObj.name;
+                course.desc = courseObj.desc;
+                course.image = courseObj.image;
+            })
+        } else {
+            realm.write(() => {
+                course = realm.create('Course', {
+                    id: courseObj.id,
+                    name: courseObj.name,
+                    desc: courseObj.desc,
+                    image: courseObj.image,
+                });
             });
-        });
-    }
-    saveCourseExercisesInDevice(course);
+        }
+        saveCourseExercisesInDevice(course);
+    });
+
 }
 
 

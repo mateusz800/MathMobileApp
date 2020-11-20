@@ -1,36 +1,39 @@
 import axios from 'axios';
-
+import Realm from 'realm';
 import { config } from '../constants'
 
 import { AuthSchema } from './schemas';
 
-const realm = new Realm({ schema: [AuthSchema] });
 
 
 export const authenticate = (email, password) => {
     return axios({
         method: 'POST',
         url: `${config.API_URL}/login`,
+        headers: {
+            "Content-type": "application/json"
+        },
         data: {
             'login': email,
             'password': password
         }
     }).then(response => {
-        updateJWT(response.headers.jwt);
         updateCredentials(email, password);
+        updateJWT(response.headers.jwt);
         return true;
     }).catch(error => {
+        console.log(error);
         return false;
     });
 };
 
 export const register = (email, password) => {
     return axios({
-        method:'POST',
-        url:`${config.API_URL}/register`,
-        data:{
-            'email':email,
-            'password':password
+        method: 'POST',
+        url: `${config.API_URL}/register`,
+        data: {
+            'email': email,
+            'password': password
         }
     }).then(response => {
         return true;
@@ -39,54 +42,79 @@ export const register = (email, password) => {
     });
 };
 
-export const logout =  () => {
-    let auth = getAuthObject();
-    realm.write(() => {
-        auth.authenticated = false;
-        auth.jwt = "";
+export const logout = () => {
+    return Realm.open({ schema: [AuthSchema] }).then(realm => {
+        realm.write(() => {
+            let auth = realm.objects('Auth')[0];
+            auth.authenticated = false;
+            auth.jwt = "";
+        });
     });
-   
+
+
 };
 
 export const getJWT = () => {
-    const auth = getAuthObject();
-    if(auth){
-        return auth.jwt;
-    }
-    return null;
+    return Realm.open({ schema: [AuthSchema] }).then(realm => {
+        let auth = realm.objects('Auth')[0];
+        if (auth) {
+            return auth.jwt;
+        }
+        return null;
+    });
+
+
 };
 
-export const isAuthenticated = () => {
-    const auth = getAuthObject();
-    if(!auth){
-        return false;
-    }
-    return getAuthObject().authenticated;
+export const isAuthenticated = async () => {
+    return Realm.open({ schema: [AuthSchema] }).then(realm => {
+        let auth = realm.objects('Auth')[0];
+        if (!auth) {
+            return false;
+        }
+        return auth.authenticated;
+    });
+
+
 }
 
 export const getCredentails = () => {
-    const auth = getAuthObject();
-    return {email:auth.email, password:auth.password};
+    return Realm.open({ schema: [AuthSchema] }).then(realm => {
+        let auth = realm.objects('Auth')[0];
+        return { email: auth.email, password: auth.password };
+    });
+
+
 }
 
 const getAuthObject = () => {
-    return realm.objects('Auth')[0];
+    return Realm.open({ schema: [AuthSchema] }).then(realm => {
+        return realm.objects('Auth')[0];
+    });
+
 }
 
 
 const updateJWT = (jwt) => {
-    let auth = getAuthObject();
-    realm.write(() => {
-        auth.jwt = jwt;
-        auth.authenticated = true;
+    Realm.open({ schema: [AuthSchema] }).then(realm => {
+        realm.write(() => {
+            let auth = realm.objects('Auth')[0];
+            auth.jwt = jwt;
+            auth.authenticated = true;
+
+
+        });
     });
 }
 
-const updateCredentials = (email, password) => {
-    let auth = getAuthObject();
-    realm.write(() => {
-        auth.email = email;
-        auth.password = password;
+const updateCredentials = async (email, password) => {
+    Realm.open({ schema: [AuthSchema] }).then(realm => {
+        realm.write(() => {
+            let auth = realm.objects('Auth')[0];
+            auth.email = email;
+            auth.password = password;
+
+        });
     });
 }
 

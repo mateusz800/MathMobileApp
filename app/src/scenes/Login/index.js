@@ -22,12 +22,14 @@ const LoginScene = ({ route, navigation }) => {
             navigation.navigate('Home');
         }
     })
+
+    console.log("login scene");
     
 
     return (
         <View style={styles.container}>
             <Image source={logo} style={styles.logo} />
-            <Text style={styles.appName}>Nazwa aplikacji</Text>
+            <Text style={styles.appName}>AWNM</Text>
             <Text style={styles.appDesc}>Aplikacja do nauki matematyki</Text>
             {type == Type.LOGIN && <LoginForm navigation={navigation} registerType={Type.REGISTER}  />}
             {type == Type.REGISTER && <RegisterForm navigation={navigation} loginType={Type.LOGIN} />}
