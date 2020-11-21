@@ -15,23 +15,25 @@ const Type = {
 
 const LoginScene = ({ route, navigation }) => {
     // TODO: navigate to home if user is logged
-   // const [type, setType] = useState(Type.LOGIN)
-    const type = route.params ? route.params.type:Type.LOGIN;
-    useEffect(()=> {
-        if(isAuthenticated()){
-            navigation.navigate('Home');
-        }
+    // const [type, setType] = useState(Type.LOGIN)
+    const type = route.params ? route.params.type : Type.LOGIN;
+    useEffect(() => {
+        isAuthenticated().then(flag => {
+            if (flag) {
+                navigation.navigate('Home');
+            }
+        })
     })
 
     console.log("login scene");
-    
+
 
     return (
         <View style={styles.container}>
             <Image source={logo} style={styles.logo} />
             <Text style={styles.appName}>AWNM</Text>
             <Text style={styles.appDesc}>Aplikacja do nauki matematyki</Text>
-            {type == Type.LOGIN && <LoginForm navigation={navigation} registerType={Type.REGISTER}  />}
+            {type == Type.LOGIN && <LoginForm navigation={navigation} registerType={Type.REGISTER} />}
             {type == Type.REGISTER && <RegisterForm navigation={navigation} loginType={Type.LOGIN} />}
         </View>
     );

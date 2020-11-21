@@ -10,8 +10,10 @@ const Menu = ({ show, navigation }) => {
         return null;
     }
     const logoutOperation = () => {
-        logout();
-        navigation.navigate('Login');
+        logout().then(()=> {
+            navigation.navigate('Login');
+        });
+        
     }
 
     return (

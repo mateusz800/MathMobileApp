@@ -69,6 +69,7 @@ export const getJWT = () => {
 export const isAuthenticated = async () => {
     return Realm.open({ schema: [AuthSchema] }).then(realm => {
         let auth = realm.objects('Auth')[0];
+        console.log(auth);
         if (!auth) {
             return false;
         }

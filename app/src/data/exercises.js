@@ -77,22 +77,23 @@ export let getCourseExercises = (setState, courseId, amount, solved) => {
 
 
 export const saveAnswer = (exerciseId, solved) => {
-    axios({
-        method: 'POST',
-        url: `${config.API_URL}/exercise/${exerciseId}/answer`,
-        headers: {
-            Authorization: `Bearer ${getJWT()}`,
-        },
-        data: {
-            "isCorrect": solved
-        }
-    }).then(response => {
-        console.log("Saving answer in API");
-    }).catch(error => {
-        console.log(error);
-        saveAnswerOnline(exerciseId, solved);
+    getJWT().then(jwt => {
+        axios({
+            method: 'POST',
+            url: `${config.API_URL}/exercise/${exerciseId}/answer`,
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+            },
+            data: {
+                "isCorrect": solved
+            }
+        }).then(response => {
+            console.log("Saving answer in API");
+        }).catch(error => {
+            console.log(error);
+            saveAnswerOnline(exerciseId, solved);
+        })    
     })
-
 };
 
 const saveAnswerOnline = (exerciseId, solved) => {

@@ -158,7 +158,7 @@ export const saveCourseInDevice = async (courseObj) => {
                     id: courseObj.id,
                     name: courseObj.name,
                     desc: courseObj.desc,
-                    image: courseObj.image,
+                    image: courseObj.image || "",
                 });
             });
         }
