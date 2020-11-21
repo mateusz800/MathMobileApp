@@ -12,7 +12,9 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 
 const ClosedEndedQuestion = ({ exercise, setMarked, children, disabled }) => {
-    const radioProps = exercise.answers.map(answer => {
+
+    const shuffledAnswers = exercise.answers.sort(()=>Math.random()-0.5);
+    const radioProps = shuffledAnswers.map(answer => {
         return {
             label: <MathText
                 key={answer}
