@@ -33,7 +33,7 @@ const AllCourses = ({ navigation }) => {
             onPress={() => {
                 //navigation.setOptions({course:course});
                 navigation.navigate('Course details', { course: course })}}>
-            <Card imageUrl={course.image} size={{ width: Dimensions.get('window').width * 0.5 - 8, height: 120 }} title={course.name} text={course.desc} key={course.name} />
+            <Card imageUrl={course.image} size={{ width: Dimensions.get('window').width * 0.5 - 8, height: 120 }} title={course.name} /*text={course.desc}*/ key={course.name} />
         </TouchableWithoutFeedback>
     ));
     return (

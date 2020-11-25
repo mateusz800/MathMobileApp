@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Image, Dimensions } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
 //import MathText from 'react-native-math'; // doesn't work
 import MathText from 'react-native-math';
@@ -12,23 +12,34 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 
 const ClosedEndedQuestion = ({ exercise, setMarked, children, disabled }) => {
+    const [radioProps, setRadioProps] = useState(null);
 
-    const shuffledAnswers = exercise.answers.sort(()=>Math.random()-0.5);
-    const radioProps = shuffledAnswers.map(answer => {
-        return {
-            label: <MathText
-                key={answer}
-                value={answer}
-                style={[styles.text, styles.answer]}
-                textSize={16}
-                textColor={colors.DARK_GRAY} />,
-            value: answer
-        };
-    });
-   
+    useEffect(() => {
+        if (exercise) {
+            const answers = [...exercise.answers];
+            const shuffledAnswers = answers.sort(() => Math.random() - 0.5);
+            setRadioProps(shuffledAnswers.map(answer => {
+                return {
+                    label: <MathText
+                        key={answer}
+                        value={answer}
+                        style={[styles.text, styles.answer]}
+                        textSize={16}
+                        textColor={colors.DARK_GRAY} />,
+                    value: answer
+                };
+            }));
+        }
+    }, [exercise]);
+    console.log(exercise.image);
     return (
         <ScrollView style={styles.container}>
             {/*<Katex expression={exercise.question}/>*/}
+            {exercise.image &&
+                <View style={{display:'flex', alignItems:'center'}}>
+                    <Image source={{ uri: exercise.image }} style={{ width: 200, height: 100, marginBottom: 50 }} resizeMode="contain" />
+                </View>
+            }
             <MathText
                 value={exercise.question}
                 style={styles.text}
@@ -45,7 +56,7 @@ const ClosedEndedQuestion = ({ exercise, setMarked, children, disabled }) => {
                     disabled={disabled}
                 />
                 }
-                <CheckboxForm checkbox_props={radioProps} onSelect={value => setMarked(value)} />
+                {radioProps && <CheckboxForm checkbox_props={radioProps} onSelect={value => setMarked(value)} />}
             </View>
             {children}
 

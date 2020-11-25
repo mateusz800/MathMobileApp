@@ -7,14 +7,14 @@ const styles = StyleSheet.create({
         padding:15,
         height:'90%',
         display:'flex',
-        paddingTop:100
+        paddingTop:50
         //justifyContent:'space-evenly'
     },
     text:{
         fontWeight:'bold',
         color:colors.DARK_GRAY,
         marginBottom:20,
-        height:80,
+        height:100,
         backgroundColor:null,
     },
     answer:{

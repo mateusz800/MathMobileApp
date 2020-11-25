@@ -30,6 +30,7 @@ const getAllCourseExercisesFromApi = (courseId) => {
                     correctAnswer: exercise.correctAnswers[0],
                     solution: exercise.solution,
                     answers: exercise.otherAnswers.concat(exercise.correctAnswers[0]),
+                    image:exercise.image
                 }
             });
         });
@@ -46,6 +47,7 @@ export let getCourseExercises = (setState, courseId, amount, solved) => {
             }
         }).then(response => {
             const exercises = response.data.content.map(exercise => {
+                console.log(exercise);
                 return {
                     id: exercise.id,
                     course: exercise.course,
@@ -53,11 +55,14 @@ export let getCourseExercises = (setState, courseId, amount, solved) => {
                     correctAnswer: exercise.correctAnswers[0],
                     solution: exercise.solution,
                     answers: exercise.otherAnswers.concat(exercise.correctAnswers[0]),
+                    image:exercise.image
                 }
             });
+            console.log(exercises);
             setState(exercises);
         })
             .catch(error => {
+                console.log(error);
                 if (error.response && error.response.status == 401) {
                     getCredentails().then(credentials => {
                         authenticate(credentials.email, credentials.password).then(() => {
@@ -122,6 +127,7 @@ const saveAnswerOnline = (exerciseId, solved) => {
             }
         });
     });
+    saveAnswer(exerciseId, solved);
 };
 
 export const clearAllAnswers = () => {

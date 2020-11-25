@@ -126,12 +126,14 @@ export const getLastAccessedCourses = async (setCourses) => {
     let array = [];
     Realm.open({ schema: [StartedCoursesSchema, CourseSchema] }).then(realm => {
         const courses = realm.objects('StartedCourses').sorted('date_last_learning', true);
-        courses.map(course => {
-            const object = getOfflineCourseById(course.course_id)
-            if (object) {
-                array.push(object);
-            }
-        });
+        if (courses) {
+            courses.map(course => {
+                const object = getOfflineCourseById(course.course_id, setCourses)
+                if (object) {
+                    array.push(object);
+                }
+            });
+        }
         if (array.length > 0) {
             setCourses(array);
         }

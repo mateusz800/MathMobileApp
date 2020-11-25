@@ -34,7 +34,7 @@ const NavigationBar = ({ title, type, progress, maxProgress, navigation, toogleM
                 {type != barType.DEFAULT && <BackBtn goBack={goBack} />}
             </View>
             <View style={styles.content}>
-                {type == barType.DETAILS && <Text style={styles.title}>{title.toUpperCase()}</Text>}
+                {type == barType.DETAILS && title && <Text style={styles.title}>{title.toUpperCase()}</Text>}
                 {type == barType.LESSON && <Progress value={progress} max={maxProgress} />}
                 <View style={styles.right}>
                     {toggleOptionsMenu && <OptionsBtn onPress={toggleOptionsMenu} />}

@@ -24,7 +24,7 @@ const Card = ({ imageUrl, size, title, text }) => {
         if (imageUrl) {
             Image.getSize(imageUrl, (width, height) => {
                 const ratio = height / width;
-                const s = { height: '50%', width: ratio * 0.5 * size.height }
+                const s = { height: '40%', width:  0.4 *size.height }
                 setImageSize(s);
             }, (error) => {
                 console.log(error);
@@ -41,7 +41,7 @@ const Card = ({ imageUrl, size, title, text }) => {
                 style={[styles.card, size && { height: size.height }]}>
                 {/*<Image source={images[imageUrl]} style={{width:'50%', height:'50%'}}/>*/}
 
-                {imageSize && <Image source={{ uri: imageUrl }} style={[styles.image && { width: imageSize.width, height: imageSize.height }]} />}
+                {imageSize && <Image source={{ uri: imageUrl }} resizeMode="contain" style={{width:100, height:50}} />}
                 {/*<SvgUri uri={imageUrl} width="50%" height="50%" />*/}
             </LinearGradient>
             {title && <Text style={styles.title}>{title.toUpperCase()}</Text>}
