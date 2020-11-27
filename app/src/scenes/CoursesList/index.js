@@ -68,12 +68,12 @@ const CoursesList = ({ route, navigation }) => {
     }
 
     if (courses == null || courses == undefined) {
-        return null;
+        return <NavigationBar type={barType.DETAILS} navigation={navigation} title={(name && "Szukaj: " + name) || (all && "Wszystkie kursy") || (recent && "Rozpoczete kursy (offline)")} />
     }
     
     return (
         <View>
-            <NavigationBar type={barType.DETAILS} navigation={navigation} title={(name && "Szukaj: " + name) || (all && "Wszystkie kursy")} />
+            <NavigationBar type={barType.DETAILS} navigation={navigation} title={(name && "Szukaj: " + name) || (all && "Wszystkie kursy") || (recent && "Rozpoczete kursy (offline)")} />
             <ScrollView style={{ marginBottom: 50 }}>
                 <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
                     {cards}
