@@ -29,6 +29,7 @@ const Lesson = ({ route, navigation }) => {
             navigation.pop();
         }
     };
+    console.log(course);
     return (
         <ScrollView>
             <NavigationBar type={barType.LESSON} progress={exerciseIndex} maxProgress={exercises ? exercises.length : 0} navigation={navigation} />

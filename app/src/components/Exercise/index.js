@@ -25,7 +25,6 @@ const Exercise = ({ exercise, last, nextFunc }) => {
     const scroller = useRef();
     const type = exercise.answers.length > 1 ? exerciseType.CLOSED_ENDED : exerciseType.OPEN;
     const checkAnswer = () => {
-        console.log(currentAnswer);
         if (currentAnswer != -1) {
             setAnswered(true);
             if (currentAnswer == exercise.correctAnswer) {
@@ -37,15 +36,19 @@ const Exercise = ({ exercise, last, nextFunc }) => {
                 saveAnswer(exercise.id, false);
 
             }
+
             setCurrentAnswer(-1);
+
         }
-}
+    }
+
+    console.log("show solution: " + showSolution);
     const showExerciseSolution = () => {
         setAnswered(true);
         setShowSolution(true);
 
-        // TODO: doen't work
-        scroller.current.scrollTo({x:100, y:100, animated:true});
+        // TODO: doen't work (under)
+        scroller.current.scrollTo({ x: 100, y: 100, animated: true });
     };
     return (
         <ScrollView ref={scroller}>
@@ -54,40 +57,44 @@ const Exercise = ({ exercise, last, nextFunc }) => {
                 <ClosedEndedQuestion exercise={exercise} setMarked={setCurrentAnswer} disabled={answered ? true : false}>
                     <Button
                         title={answered ? (last ? 'Zakończ' : 'Następne') : 'Sprawdz odpowiedz'}
-                        color={colors.MAROON} onPress={answered ? () => { setAnswered(false); nextFunc(); } : checkAnswer}
+                        color={colors.MAROON} onPress={answered ? () => { setAnswered(false); nextFunc(); setShowSolution(false); } : checkAnswer}
                         disabled={currentAnswer == -1 && !answered ? true : false}
                     />
-                    <View style={{marginTop:25}}>
-                        <Button title='Zobacz rozwiązanie' color={colors.LIGHT_GRAY_2}
-                            onPress={showExerciseSolution} />
-                    </View>
+                    {exercise.solution &&
+                        <View style={{ marginTop: 25 }}>
+                            <Button title='Zobacz rozwiązanie' color={colors.LIGHT_GRAY_2}
+                                onPress={showExerciseSolution} />
+                        </View>
+                    }
                     {showSolution &&
                         <MathText
                             value={exercise.solution}
-                            style={{ height: 250, marginTop: 50, backgroundColor:null}}
+                            style={{ height: 250, marginTop: 50, backgroundColor: null }}
                             textSize={18} />
                     }
 
                 </ClosedEndedQuestion>
             }
             {type == exerciseType.OPEN &&
-            <OpenExercise setAnswer={setCurrentAnswer} exercise={exercise}>
-                <Button
+                <OpenExercise setAnswer={setCurrentAnswer} exercise={exercise}>
+                    <Button
                         title={answered ? (last ? 'Zakończ' : 'Następne') : 'Sprawdz odpowiedz'}
-                        color={colors.MAROON} onPress={answered ? () => { setAnswered(false); nextFunc(); } : checkAnswer}
+                        color={colors.MAROON} onPress={answered ? () => { setAnswered(false); nextFunc(); setShowSolution(false) } : checkAnswer}
                         disabled={currentAnswer == -1 && !answered ? true : false}
                     />
-                    <View style={{marginTop:25}}>
-                        <Button title='Zobacz rozwiązanie' color={colors.LIGHT_GRAY_2}
-                            onPress={showExerciseSolution} />
-                    </View>
+                    {exercise.solution &&
+                        <View style={{ marginTop: 25 }}>
+                            <Button title='Zobacz rozwiązanie' color={colors.LIGHT_GRAY_2}
+                                onPress={showExerciseSolution} />
+                        </View>
+                    }
                     {showSolution &&
                         <MathText
                             value={exercise.solution}
-                            style={{ height: 250, marginTop: 50, backgroundColor:null}}
+                            style={{ height: 250, marginTop: 50, backgroundColor: null }}
                             textSize={18} />
                     }
-            </OpenExercise>
+                </OpenExercise>
             }
 
         </ScrollView>

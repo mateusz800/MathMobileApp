@@ -22,6 +22,7 @@ const getAllCourseExercisesFromApi = (courseId) => {
                 Authorization: `Bearer ${jwt}`
             }
         }).then(response => {
+            console.log(response.data.content);
             return response.data.content.map(exercise => {
                 return {
                     id: exercise.id,
@@ -46,6 +47,7 @@ export let getCourseExercises = (setState, courseId, amount, solved) => {
                 Authorization: `Bearer ${jwt}`
             }
         }).then(response => {
+            console.log(response.data);
             const exercises = response.data.content.map(exercise => {
                 console.log(exercise);
                 return {
