@@ -6,7 +6,9 @@ App offers courses that consists of math exercises. It uses REST API from [that 
 
 
 ## Running the app
-First you have to download dependencies via command below.
+As I mentioned earlier this app uses external API. Start the API before running this app.
+
+Download dependencies via command below.
 ```bash
 npm install
 ```
@@ -14,3 +16,5 @@ Then you can run the app. You have to get Android SDK installed and physical dev
 ```bash
 npx react-native run-android
 ```
+
+App was tested only on Android, but it is written in React, so running it on IOS devices should also be possible.
