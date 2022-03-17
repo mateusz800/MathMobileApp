@@ -1,4 +1,4 @@
-# Mobile application for supporting mathematics learning
+# A mobile app to support math learning
 
 App offers courses that consists of math exercises. It uses REST API from [that repo](https://github.com/mateusz800/ExercisesSystem) for getting exercises and updating user progress.
 
